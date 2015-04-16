@@ -4,6 +4,30 @@
 
 通过Java调用FFMpeg命令的方式来对音视频进行处理（获取信息、截图等等）。
 
+
+
+## FFMpeg安装
+[FFMpeg官网](http://ffmpeg.org/)
+
+### Linux
+
+`yum install ffmpeg`
+
+`apt-get install ffmpeg`
+
+### Mac
+
+`brew install ffmpeg`
+
+### Windows
+
+1. 可以在[这儿](http://ffmpeg.zeranoe.com/builds/)下载编译好的FFmpeg
+2. 解压到 **/path/to/ffmpeg** 
+3. 添加 **/path/to/ffmpeg/bin** 到你的环境变量 **PATH** 中。
+4. 打开命令行，执行**ffmpeg -v**
+
+## 具体的ffmpeg命令可以参考下面的文档
+
 [FFMpeg命令介绍](ffmpeg.md)
 
 ## 其他解释
