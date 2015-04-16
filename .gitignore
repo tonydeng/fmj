@@ -1,0 +1,47 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+#Eclipse Files#
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpath
+
+#Idea Files#
+*.iml
+*.ipr
+*.iws
+.idea/
+
+
+#Maven Files#
+*/target/
+target/
+pom.xml.*
+*/pom.xml.*
+release.properties
