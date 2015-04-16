@@ -3,6 +3,7 @@ package com.duoqu.commons.fmj.runner;
 import com.duoqu.commons.fmj.BaseTest;
 import com.duoqu.commons.fmj.model.VideoInfo;
 import com.google.common.collect.Lists;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.util.DigestUtils;
 
@@ -12,6 +13,7 @@ import java.util.List;
 /**
  * Created by tonydeng on 15/4/16.
  */
+@Ignore
 public class FFmpegCommandRunnerTest extends BaseTest {
     private static final List<File> inputs = Lists.newArrayList(
             new File("/Users/tonydeng/temp/m3u8/muse_va_v97.mp4"),
