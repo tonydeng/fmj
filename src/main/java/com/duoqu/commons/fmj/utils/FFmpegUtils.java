@@ -20,11 +20,11 @@ public class FFmpegUtils {
      * @param commamdLine
      * @return
      */
-    public static VideoInfo regInfo(String commamdLine) {
-        if(StringUtils.isNotEmpty(commamdLine)){
+    public static VideoInfo regInfo(String stdout) {
+        if(StringUtils.isNotEmpty(stdout)){
             VideoInfo vi = new VideoInfo();
             Pattern patternDuration = Pattern.compile(regexDuration);
-            Matcher matcherDuration = patternDuration.matcher(commamdLine);
+            Matcher matcherDuration = patternDuration.matcher(stdout);
             if (matcherDuration.find()) {
                 String duration = matcherDuration.group(1);
                 if(StringUtils.isNotBlank(duration) && duration.indexOf(":") >= 0){
@@ -46,7 +46,7 @@ public class FFmpegUtils {
             }
 
             Pattern patternVideo = Pattern.compile(regexVideo);
-            Matcher matcherVideo = patternVideo.matcher(info);
+            Matcher matcherVideo = patternVideo.matcher(stdout);
 
             if (matcherVideo.find()) {
 //                map.put("编码格式", matcherVideo.group(1));
@@ -56,7 +56,7 @@ public class FFmpegUtils {
                 if(null != wh && wh.length == 2){
                     vi.setResolution(new VideoResolution(Integer.valueOf(wh[0]), Integer.valueOf(wh[1])));
                 }
-
+                vi.setFormat(matcherVideo.group(1));
             }
 //            Pattern patternAudio = Pattern.compile(regexAudio);
 //            Matcher matcherAudio = patternAudio.matcher(info);
