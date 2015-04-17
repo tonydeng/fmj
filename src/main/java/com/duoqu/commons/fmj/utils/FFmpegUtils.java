@@ -4,6 +4,8 @@ import com.duoqu.commons.fmj.model.VideoInfo;
 import com.duoqu.commons.fmj.model.VideoResolution;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,25 +18,24 @@ public class FFmpegUtils {
     private static final String regexAudio = "Audio: (\\w*), (\\d*) Hz";
 
     /**
-     *
-     * @param commamdLine
+     * @param stdout
      * @return
      */
     public static VideoInfo regInfo(String stdout) {
-        if(StringUtils.isNotEmpty(stdout)){
+        if (StringUtils.isNotEmpty(stdout)) {
             VideoInfo vi = new VideoInfo();
             Pattern patternDuration = Pattern.compile(regexDuration);
             Matcher matcherDuration = patternDuration.matcher(stdout);
             if (matcherDuration.find()) {
                 String duration = matcherDuration.group(1);
-                if(StringUtils.isNotBlank(duration) && duration.indexOf(":") >= 0){
+                if (StringUtils.isNotBlank(duration) && duration.indexOf(":") >= 0) {
                     String[] time = duration.split(":");
                     int hour = Integer.valueOf(time[0]);
                     int minute = Integer.valueOf(time[1]);
                     int second = 0;
-                    if(time[2].indexOf(".") >= 0){
-                        second = Integer.valueOf(time[2].substring(0,time[2].indexOf(".")));
-                    }else{
+                    if (time[2].indexOf(".") >= 0) {
+                        second = Integer.valueOf(time[2].substring(0, time[2].indexOf(".")));
+                    } else {
                         second = Integer.valueOf(time[2]);
                     }
                     vi.setDuration((hour * 60 * 60) + (minute * 60) + second);
@@ -53,7 +54,7 @@ public class FFmpegUtils {
 //                map.put("视频格式", matcherVideo.group(2));
 //                map.put("分辨率", matcherVideo.group(3));
                 String[] wh = matcherVideo.group(3).split("x");
-                if(null != wh && wh.length == 2){
+                if (null != wh && wh.length == 2) {
                     vi.setResolution(new VideoResolution(Integer.valueOf(wh[0]), Integer.valueOf(wh[1])));
                 }
                 vi.setFormat(matcherVideo.group(1));
@@ -70,4 +71,20 @@ public class FFmpegUtils {
         }
         return null;
     }
+
+
+
+    /**
+     * 构建ffmpeg命令
+     * @param commands
+     * @return
+     */
+    public static String ffmpegCmdLine(List<String> commands) {
+        StringBuffer sb = new StringBuffer();
+        for (String command : commands) {
+            sb.append(command + " ");
+        }
+        return sb.toString();
+    }
+
 }

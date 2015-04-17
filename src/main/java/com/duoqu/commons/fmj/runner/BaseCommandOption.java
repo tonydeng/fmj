@@ -16,16 +16,30 @@ public class BaseCommandOption {
     private static List<String> FFMPEG_BINARY;
 
     public static final String WINCMD = "cmd";
-
     public static final String WINCMDOP = "/c";
-
     public static final String LINUXCMD = "/usr/bin/env";
-
     public static final String FFMPEG = "ffmpeg";
 
     public static final String Y = "-y";
-
     public static final String INPUT = "-i";
+    public static final String T = "-t";
+    public static final String F = "-f";
+    public static final String S = "-s";
+    public static final String SS = "-ss";
+    public static final String CV = "-c:v";
+    public static final String CA = "-c:a";
+    public static final String STRICT = "-strict";
+
+    public static final String FORMAT_HLS = "hls";
+    public static final String FORMAT_IMAGE = "image2";
+    public static final String FORMAT_LIB264 = "libx264";
+    public static final String FORMAT_ACC = "acc";
+
+    public static final String HLS_TIME = "-hls_time";
+    public static final String HLS_LIST_SIZE = "-hls_list_size";
+    public static final String HLS_WRAP = "-hls_wrap";
+    public static final String HLS_BASE_URL = "-hls_base_url";
+
 
     static {
         String env = System.getProperty("os.name");
@@ -66,16 +80,26 @@ public class BaseCommandOption {
     }
 
     public static List<String> toScreenshotCmdArrays(String output, int shotSecond) {
-        List<String> commands = Lists.newArrayList();
-        commands.add(BaseCommandOption.Y);
-        commands.add("-f");
-        commands.add("image2");
-        commands.add("-t");
-        commands.add("0.001");
-        commands.add("-ss");
-        commands.add(String.valueOf(shotSecond));
-        commands.add(output);
-        return commands;
+        return Lists.newArrayList(
+                Y,
+                F,FORMAT_IMAGE,
+                T,"0.001",
+                SS,String.valueOf(shotSecond),
+                output
+        );
     }
 
+    public static List<String> toHLSCmdArrays(String m3u8Output, int cutSecond, String tsBaseUrl) {
+        return Lists.newArrayList(
+//                CV,FORMAT_LIB264,
+//                CA,FORMAT_ACC,
+//                STRICT,"-2",
+                F,FORMAT_HLS,
+                HLS_TIME,String.valueOf(cutSecond),
+                HLS_LIST_SIZE,"0",
+                HLS_WRAP,"0",
+                HLS_BASE_URL,tsBaseUrl,
+                m3u8Output
+        );
+    }
 }
