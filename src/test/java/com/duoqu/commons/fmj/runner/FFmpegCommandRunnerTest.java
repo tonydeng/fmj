@@ -18,7 +18,7 @@ public
 class FFmpegCommandRunnerTest extends BaseTest {
     private static final List<File> inputs = Lists.newArrayList(
             new File("/Users/tonydeng/temp/m3u8/muse_va_v97.mp4"),
-            new File("/Users/tonydeng/temp/m3u8/muse_va_v140.mp4")
+            new File("/Users/tonydeng/temp/m3u8/VID_20150414_191241.mp4")
     );
 
 //    @Test
@@ -30,7 +30,7 @@ class FFmpegCommandRunnerTest extends BaseTest {
         }
     }
 
-//    @Test
+    @Test
     public void screenshotTest() {
         for (File input : inputs) {
             File output = FFmpegCommandRunner.screenshot(input,
@@ -39,7 +39,7 @@ class FFmpegCommandRunnerTest extends BaseTest {
         }
     }
 
-    @Test
+//    @Test
     public void generationHlsTest(){
         for(File input:inputs){
             HLS hls=  FFmpegCommandRunner.generationHls(input,3,"http://p.wuguangchang.com/hls/");

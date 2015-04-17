@@ -29,8 +29,8 @@ public class FFmpegCommandRunner {
      */
     public static VideoInfo getVideoInfo(File input) {
         if (input != null && input.exists()) {
-            List<String> commands = Lists.newArrayList();
-            commands.addAll(BaseCommandOption.toCommonsCmdArrays(input.getAbsolutePath()));
+            List<String> commands = Lists.newArrayList(BaseCommandOption.getFfmpegBinary());
+            commands.addAll(BaseCommandOption.toInputCommonsCmdArrays(input.getAbsolutePath()));
             if (log.isInfoEnabled())
                 log.info("get video info commands : '{}'", FFmpegUtils.ffmpegCmdLine(commands));
             try {
@@ -83,9 +83,9 @@ public class FFmpegCommandRunner {
     public static File screenshot(File input, int shotSecond) {
         File output = FileUtils.getSrceentshotOutputByInput(input);
         if (output != null) {
-            List<String> commands = Lists.newArrayList();
-            commands.addAll(BaseCommandOption.toCommonsCmdArrays(input.getAbsolutePath()));
-            commands.addAll(BaseCommandOption.toScreenshotCmdArrays(output.getAbsolutePath(), shotSecond));
+            VideoInfo vi = getVideoInfo(input);
+            List<String> commands = Lists.newArrayList(BaseCommandOption.getFfmpegBinary());
+            commands.addAll(BaseCommandOption.toScreenshotCmdArrays(input.getAbsolutePath(), output.getAbsolutePath(), shotSecond, vi));
             if (log.isInfoEnabled()) {
                 log.info("screenshot commands :'{}'", FFmpegUtils.ffmpegCmdLine(commands));
             }
@@ -126,9 +126,9 @@ public class FFmpegCommandRunner {
     public static HLS generationHls(File input, int cutSecond, String tsBaseUrl) {
         File output = FileUtils.getM3U8OutputByInput(input);
         if (output != null) {
-            List<String> commands = Lists.newArrayList();
-            commands.addAll(BaseCommandOption.toCommonsCmdArrays(input.getAbsolutePath()));
-            commands.addAll(BaseCommandOption.toHLSCmdArrays(output.getAbsolutePath(), cutSecond, tsBaseUrl));
+            VideoInfo vi = getVideoInfo(input);
+            List<String> commands = Lists.newArrayList(BaseCommandOption.getFfmpegBinary());
+            commands.addAll(BaseCommandOption.toHLSCmdArrays(input.getAbsolutePath(), output.getAbsolutePath(), cutSecond, tsBaseUrl, vi));
             if (log.isInfoEnabled()) {
                 log.info("generation HLS commands : '{}'", FFmpegUtils.ffmpegCmdLine(commands));
             }

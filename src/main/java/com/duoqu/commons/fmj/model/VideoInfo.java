@@ -8,6 +8,7 @@ public class VideoInfo {
     private long size;
     private long duration;
     private VideoResolution resolution;
+    private int rotate;
 
     public String getFormat() {
         return format;
@@ -41,6 +42,13 @@ public class VideoInfo {
         this.resolution = resolution;
     }
 
+    public int getRotate() {
+        return rotate;
+    }
+
+    public void setRotate(int rotate) {
+        this.rotate = rotate;
+    }
 
     @Override
     public String toString() {
@@ -49,6 +57,7 @@ public class VideoInfo {
                 ", size=" + size +
                 ", duration=" + duration +
                 ", resolution=" + resolution +
+                ", rotate=" + rotate +
                 '}';
     }
 }

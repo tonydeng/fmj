@@ -1,9 +1,14 @@
 package com.duoqu.commons.fmj.runner;
 
+import com.duoqu.commons.fmj.model.VideoInfo;
+import com.duoqu.commons.fmj.model.VideoResolution;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -29,6 +34,9 @@ public class BaseCommandOption {
     public static final String CV = "-c:v";
     public static final String CA = "-c:a";
     public static final String STRICT = "-strict";
+    public static final String VF = "-vf";
+
+    public static final String COPY = "copy";
 
     public static final String FORMAT_HLS = "hls";
     public static final String FORMAT_IMAGE = "image2";
@@ -70,36 +78,59 @@ public class BaseCommandOption {
         return FFMPEG_BINARY;
     }
 
-    public static List<String> toCommonsCmdArrays(String input) {
-        List<String> commands = Lists.newArrayList();
-        commands.addAll(getFfmpegBinary());
-        commands.add(INPUT);
-        commands.add(input);
-
-        return commands;
-    }
-
-    public static List<String> toScreenshotCmdArrays(String output, int shotSecond) {
+    public static List<String> toInputCommonsCmdArrays(String input) {
         return Lists.newArrayList(
-                Y,
-                F,FORMAT_IMAGE,
-                T,"0.001",
-                SS,String.valueOf(shotSecond),
-                output
+                INPUT, input
         );
     }
 
-    public static List<String> toHLSCmdArrays(String m3u8Output, int cutSecond, String tsBaseUrl) {
-        return Lists.newArrayList(
-//                CV,FORMAT_LIB264,
-//                CA,FORMAT_ACC,
-//                STRICT,"-2",
-                F,FORMAT_HLS,
-                HLS_TIME,String.valueOf(cutSecond),
-                HLS_LIST_SIZE,"0",
-                HLS_WRAP,"0",
-                HLS_BASE_URL,tsBaseUrl,
-                m3u8Output
-        );
+    public static List<String> toScreenshotCmdArrays(String input, String output, int shotSecond, VideoInfo vi) {
+        if (vi != null) {
+            List<String> commands = Lists.newArrayList();
+            if (vi.getDuration() < Long.valueOf(shotSecond).longValue()) {
+                shotSecond = 1;
+            }
+            commands.add(SS);
+            commands.add(String.valueOf(shotSecond));
+
+            commands.addAll(toInputCommonsCmdArrays(input));
+
+            if(vi.getRotate() > 0){
+                //-vf "transpose=1" -c:a copy
+                commands.add(VF);
+                commands.add("transpose=1");
+                commands.add(CA);
+                commands.add(COPY);
+            }
+            commands.add(T);
+            commands.add("0.001");
+            commands.add(Y);
+            commands.add(F);
+            commands.add(FORMAT_IMAGE);
+
+
+
+            commands.add(output);
+            return commands;
+        }
+        return Collections.emptyList();
+    }
+
+    public static List<String> toHLSCmdArrays(String input, String m3u8Output, int cutSecond, String tsBaseUrl, VideoInfo vi) {
+        if (vi != null) {
+            List<String> commands = Lists.newArrayList(toInputCommonsCmdArrays(input));
+            commands.addAll(Lists.newArrayList(CV, FORMAT_LIB264,
+                    CA, FORMAT_ACC,
+                    STRICT, "-2",
+                    F, FORMAT_HLS,
+                    HLS_TIME, String.valueOf(cutSecond),
+                    HLS_LIST_SIZE, "0",
+                    HLS_WRAP, "0",
+                    HLS_BASE_URL, tsBaseUrl,
+                    m3u8Output));
+
+            return commands;
+        }
+        return Collections.EMPTY_LIST;
     }
 }

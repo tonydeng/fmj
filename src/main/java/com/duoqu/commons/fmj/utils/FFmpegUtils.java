@@ -3,8 +3,9 @@ package com.duoqu.commons.fmj.utils;
 import com.duoqu.commons.fmj.model.VideoInfo;
 import com.duoqu.commons.fmj.model.VideoResolution;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,9 +14,11 @@ import java.util.regex.Pattern;
  * Created by tonydeng on 15/4/15.
  */
 public class FFmpegUtils {
+    private static final Logger log = LoggerFactory.getLogger(FFmpegUtils.class);
     private static final String regexDuration = "Duration: (.*?), start: (.*?), bitrate: (\\d*) kb\\/s";
     private static final String regexVideo = "Video: (.*?), (.*?), (.*?)[,\\s]";
     private static final String regexAudio = "Audio: (\\w*), (\\d*) Hz";
+    private static final String regexRotate = "rotate          : (.*?) ";
 
     /**
      * @param stdout
@@ -67,6 +70,20 @@ public class FFmpegUtils {
 ////                map.put("音频采样频率", matcherAudio.group(2));
 //                ai.setDecoder(matcherAudio.group(1));
 //            }
+
+            Pattern patternRotate = Pattern.compile(regexRotate);
+            Matcher matcherRotate = patternRotate.matcher(stdout);
+            if(matcherRotate.find()){
+                for(int i=0;i<matcherRotate.groupCount();i++){
+                    if(log.isDebugEnabled()){
+                        log.debug("index {} : rotate:'{}'",i,matcherRotate.group(i));
+                    }
+                }
+                String rotate = matcherRotate.group(0);
+                if(rotate.indexOf(":") > 0){
+                    vi.setRotate(Integer.valueOf(rotate.substring(rotate.indexOf(":")+1,rotate.length()).trim()));
+                }
+            }
             return vi;
         }
         return null;
