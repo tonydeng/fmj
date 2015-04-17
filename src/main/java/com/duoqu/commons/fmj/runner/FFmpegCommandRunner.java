@@ -1,8 +1,11 @@
 package com.duoqu.commons.fmj.runner;
 
+import com.duoqu.commons.fmj.model.HLS;
 import com.duoqu.commons.fmj.model.VideoInfo;
 import com.duoqu.commons.fmj.utils.FFmpegUtils;
+import com.duoqu.commons.fmj.utils.FileUtils;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +25,7 @@ public class FFmpegCommandRunner {
 
     /**
      * 获取视频信息
+     *
      * @param input
      * @return
      */
@@ -29,6 +33,8 @@ public class FFmpegCommandRunner {
         if (input != null && input.exists()) {
             List<String> commands = Lists.newArrayList();
             commands.addAll(BaseCommandOption.toCommonsCmdArrays(input.getAbsolutePath()));
+            if (log.isDebugEnabled())
+                log.debug("get video info commands : '{}'", FFmpegUtils.ffmpegCmdLine(commands));
             try {
                 ProcessBuilder pb = new ProcessBuilder();
                 pb.command(commands);
@@ -36,9 +42,9 @@ public class FFmpegCommandRunner {
                 pb.redirectErrorStream(true);
 
 
-                Process p = pb.start();
+                pro = pb.start();
                 BufferedReader buf = null;
-                buf = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                buf = new BufferedReader(new InputStreamReader(pro.getInputStream()));
                 StringBuffer sb = new StringBuffer();
                 String line = null;
                 while ((line = buf.readLine()) != null) {
@@ -48,7 +54,7 @@ public class FFmpegCommandRunner {
                 }
 //            System.out.println();
 
-                int ret = p.waitFor();
+                int ret = pro.waitFor();
                 VideoInfo mi = FFmpegUtils.regInfo(sb.toString());
                 mi.setSize(new FileInputStream(input).available());
                 return mi;
@@ -64,18 +70,19 @@ public class FFmpegCommandRunner {
 
     /**
      * 视频截图
+     *
      * @param input
-     * @param output
      * @param shotSecond
      * @return
      */
-    public static File screenshot(File input, String output, int shotSecond) {
+    public static File screenshot(File input, int shotSecond) {
         if (input != null && input.exists()) {
+            File output = FileUtils.getSrceentshotOutputByInput(input);
             List<String> commands = Lists.newArrayList();
             commands.addAll(BaseCommandOption.toCommonsCmdArrays(input.getAbsolutePath()));
-            commands.addAll(BaseCommandOption.toScreenshotCmdArrays(output, shotSecond));
+            commands.addAll(BaseCommandOption.toScreenshotCmdArrays(output.getAbsolutePath(), shotSecond));
             if (log.isDebugEnabled()) {
-                log.debug("commands :'{}'", commands);
+                log.debug("screenshot commands :'{}'", FFmpegUtils.ffmpegCmdLine(commands));
             }
             try {
                 ProcessBuilder pb = new ProcessBuilder();
@@ -84,21 +91,46 @@ public class FFmpegCommandRunner {
                 pb.redirectErrorStream(true);
 
 
-                Process p = pb.start();
-                BufferedReader buf = null;
-                buf = new BufferedReader(new InputStreamReader(p.getInputStream()));
-                StringBuffer sb = new StringBuffer();
-                int ret = p.waitFor();
+                pro = pb.start();
+//                BufferedReader buf = null;
+//                buf = new BufferedReader(new InputStreamReader(p.getInputStream()));
+//                StringBuffer sb = new StringBuffer();
+                int ret = pro.waitFor();
                 if (log.isDebugEnabled())
                     log.debug("process run status:'{}'", ret);
-                File outputFile = new File(output);
-                if (outputFile != null && outputFile.exists())
-                    return outputFile;
+                if (output != null && output.exists())
+                    return output;
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+        return null;
+    }
+
+    /**
+     * 生成HLS
+     *
+     * @param input
+     * @param outputPath
+     * @param cutSecond
+     * @param tsBaseUrl
+     * @return
+     */
+    public static HLS generationHls(File input, String outputPath, int cutSecond, String tsBaseUrl) {
+        if (input != null && input.exists()) {
+            if (StringUtils.isNotEmpty(outputPath)
+                    && FileUtils.createDirectory(outputPath)) {
+                List<String> commands = Lists.newArrayList();
+                commands.addAll(BaseCommandOption.toCommonsCmdArrays(input.getAbsolutePath()));
+                commands.addAll(BaseCommandOption.toHLSCmdArrays(outputPath, cutSecond, tsBaseUrl));
+                if (log.isDebugEnabled()) {
+                    log.debug("generation HLS commands : '{}'", FFmpegUtils.ffmpegCmdLine(commands));
+                }
+            }
+
+
         }
         return null;
     }
