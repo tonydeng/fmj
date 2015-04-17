@@ -1,6 +1,7 @@
 package com.duoqu.commons.fmj.runner;
 
 import com.duoqu.commons.fmj.BaseTest;
+import com.duoqu.commons.fmj.model.HLS;
 import com.duoqu.commons.fmj.model.VideoInfo;
 import com.google.common.collect.Lists;
 import org.junit.Ignore;
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * Created by tonydeng on 15/4/16.
  */
-@Ignore
+//@Ignore
 public
 class FFmpegCommandRunnerTest extends BaseTest {
     private static final List<File> inputs = Lists.newArrayList(
@@ -29,7 +30,7 @@ class FFmpegCommandRunnerTest extends BaseTest {
         }
     }
 
-    @Test
+//    @Test
     public void screenshotTest() {
         for (File input : inputs) {
             File output = FFmpegCommandRunner.screenshot(input,
@@ -38,10 +39,16 @@ class FFmpegCommandRunnerTest extends BaseTest {
         }
     }
 
-//    @Test
+    @Test
     public void generationHlsTest(){
         for(File input:inputs){
-//            String
+            HLS hls=  FFmpegCommandRunner.generationHls(input,3,"http://p.wuguangchang.com/hls/");
+            if(hls != null){
+                log.info("m3u8 path:'{}'",hls.getM3u8().getAbsolutePath());
+                for(File ts:hls.getTs()){
+                    log.info("ts path:'{}'",ts.getAbsolutePath());
+                }
+            }
         }
     }
 }

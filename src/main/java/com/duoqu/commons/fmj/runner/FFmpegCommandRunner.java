@@ -5,7 +5,6 @@ import com.duoqu.commons.fmj.model.VideoInfo;
 import com.duoqu.commons.fmj.utils.FFmpegUtils;
 import com.duoqu.commons.fmj.utils.FileUtils;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,8 +16,7 @@ import java.util.List;
  */
 public class FFmpegCommandRunner {
     private static final Logger log = LoggerFactory.getLogger(FFmpegCommandRunner.class);
-
-
+    public static ProcessBuilder pb = null;
     public static Process pro = null;
 
     private volatile static boolean isRunning = false;
@@ -33,10 +31,10 @@ public class FFmpegCommandRunner {
         if (input != null && input.exists()) {
             List<String> commands = Lists.newArrayList();
             commands.addAll(BaseCommandOption.toCommonsCmdArrays(input.getAbsolutePath()));
-            if (log.isDebugEnabled())
-                log.debug("get video info commands : '{}'", FFmpegUtils.ffmpegCmdLine(commands));
+            if (log.isInfoEnabled())
+                log.info("get video info commands : '{}'", FFmpegUtils.ffmpegCmdLine(commands));
             try {
-                ProcessBuilder pb = new ProcessBuilder();
+                pb = new ProcessBuilder();
                 pb.command(commands);
 
                 pb.redirectErrorStream(true);
@@ -49,20 +47,27 @@ public class FFmpegCommandRunner {
                 String line = null;
                 while ((line = buf.readLine()) != null) {
                     sb.append(line);
-//                System.out.println(line);
                     continue;
                 }
-//            System.out.println();
 
                 int ret = pro.waitFor();
+                if (log.isInfoEnabled())
+                    log.info("get video info process run status:'{}'", ret);
                 VideoInfo mi = FFmpegUtils.regInfo(sb.toString());
                 mi.setSize(new FileInputStream(input).available());
                 return mi;
             } catch (IOException e) {
+                if (log.isErrorEnabled())
+                    log.error("video '{}' get info IOException :'{} '", input.getAbsoluteFile(), e.getCause().getMessage());
                 e.printStackTrace();
             } catch (InterruptedException e) {
+                if (log.isErrorEnabled())
+                    log.error("video '{}' get info InterruptedException :'{} '", input.getAbsoluteFile(), e.getCause().getMessage());
                 e.printStackTrace();
             }
+        } else {
+            if (log.isErrorEnabled())
+                log.error("video '{}' is not fount! ", input.getAbsolutePath());
         }
 
         return null;
@@ -76,35 +81,36 @@ public class FFmpegCommandRunner {
      * @return
      */
     public static File screenshot(File input, int shotSecond) {
-        if (input != null && input.exists()) {
-            File output = FileUtils.getSrceentshotOutputByInput(input);
+        File output = FileUtils.getSrceentshotOutputByInput(input);
+        if (output != null) {
             List<String> commands = Lists.newArrayList();
             commands.addAll(BaseCommandOption.toCommonsCmdArrays(input.getAbsolutePath()));
             commands.addAll(BaseCommandOption.toScreenshotCmdArrays(output.getAbsolutePath(), shotSecond));
-            if (log.isDebugEnabled()) {
-                log.debug("screenshot commands :'{}'", FFmpegUtils.ffmpegCmdLine(commands));
+            if (log.isInfoEnabled()) {
+                log.info("screenshot commands :'{}'", FFmpegUtils.ffmpegCmdLine(commands));
             }
             try {
-                ProcessBuilder pb = new ProcessBuilder();
+                pb = new ProcessBuilder();
                 pb.command(commands);
-
                 pb.redirectErrorStream(true);
-
-
                 pro = pb.start();
-//                BufferedReader buf = null;
-//                buf = new BufferedReader(new InputStreamReader(p.getInputStream()));
-//                StringBuffer sb = new StringBuffer();
                 int ret = pro.waitFor();
-                if (log.isDebugEnabled())
-                    log.debug("process run status:'{}'", ret);
+                if (log.isInfoEnabled())
+                    log.info("screent process run status:'{}'", ret);
                 if (output != null && output.exists())
                     return output;
             } catch (IOException e) {
+                if (log.isErrorEnabled())
+                    log.error("video '{}' screenshot IOException :'{} '", input.getAbsoluteFile(), e.getCause().getMessage());
                 e.printStackTrace();
             } catch (InterruptedException e) {
+                if (log.isErrorEnabled())
+                    log.error("video '{}' screenshot InterruptedException :'{} '", input.getAbsoluteFile(), e.getCause().getMessage());
                 e.printStackTrace();
             }
+        } else {
+            if (log.isErrorEnabled())
+                log.error("video '{}' screentshot '{}' create error!", input.getAbsolutePath(), output.getAbsolutePath());
         }
         return null;
     }
@@ -113,25 +119,45 @@ public class FFmpegCommandRunner {
      * 生成HLS
      *
      * @param input
-     * @param outputPath
      * @param cutSecond
      * @param tsBaseUrl
      * @return
      */
-    public static HLS generationHls(File input, String outputPath, int cutSecond, String tsBaseUrl) {
-        if (input != null && input.exists()) {
-            if (StringUtils.isNotEmpty(outputPath)
-                    && FileUtils.createDirectory(outputPath)) {
-                List<String> commands = Lists.newArrayList();
-                commands.addAll(BaseCommandOption.toCommonsCmdArrays(input.getAbsolutePath()));
-                commands.addAll(BaseCommandOption.toHLSCmdArrays(outputPath, cutSecond, tsBaseUrl));
-                if (log.isDebugEnabled()) {
-                    log.debug("generation HLS commands : '{}'", FFmpegUtils.ffmpegCmdLine(commands));
-                }
+    public static HLS generationHls(File input, int cutSecond, String tsBaseUrl) {
+        File output = FileUtils.getM3U8OutputByInput(input);
+        if (output != null) {
+            List<String> commands = Lists.newArrayList();
+            commands.addAll(BaseCommandOption.toCommonsCmdArrays(input.getAbsolutePath()));
+            commands.addAll(BaseCommandOption.toHLSCmdArrays(output.getAbsolutePath(), cutSecond, tsBaseUrl));
+            if (log.isInfoEnabled()) {
+                log.info("generation HLS commands : '{}'", FFmpegUtils.ffmpegCmdLine(commands));
+            }
+            pb = new ProcessBuilder();
+            pb.command(commands);
+            try {
+                pro = pb.start();
+                int ret = pro.waitFor();
+                if (log.isInfoEnabled())
+                    log.info("screent process run status:'{}'", ret);
+                HLS hls = new HLS();
+                hls.setM3u8(output);
+                hls.setTs(FileUtils.findTS(output));
+                return hls;
+            } catch (IOException e) {
+                if (log.isErrorEnabled())
+                    log.error("video '{}' generationHls IOException :'{} '", input.getAbsoluteFile(), e.getCause().getMessage());
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                if (log.isErrorEnabled())
+                    log.error("video '{}' generationHls InterruptedException :'{} '", input.getAbsoluteFile(), e.getCause().getMessage());
+                e.printStackTrace();
             }
 
-
+        } else {
+            if (log.isErrorEnabled())
+                log.error("vidoe '{}' m3u8 '{}' create error!", input.getAbsolutePath(), output.getAbsolutePath());
         }
+
         return null;
     }
 }

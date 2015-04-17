@@ -4,6 +4,7 @@ import com.duoqu.commons.fmj.model.VideoInfo;
 import com.duoqu.commons.fmj.model.VideoResolution;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -71,6 +72,8 @@ public class FFmpegUtils {
         return null;
     }
 
+
+
     /**
      * 构建ffmpeg命令
      * @param commands
@@ -83,4 +86,5 @@ public class FFmpegUtils {
         }
         return sb.toString();
     }
+
 }

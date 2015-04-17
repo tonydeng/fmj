@@ -35,9 +35,9 @@ public class BaseCommandOption {
     public static final String FORMAT_LIB264 = "libx264";
     public static final String FORMAT_ACC = "acc";
 
-    public static final String HLS_TIME = "hls_time";
-    public static final String HLS_LIST_SIZE = "hls_list_size";
-    public static final String HLS_WRAP = "hls_wrap";
+    public static final String HLS_TIME = "-hls_time";
+    public static final String HLS_LIST_SIZE = "-hls_list_size";
+    public static final String HLS_WRAP = "-hls_wrap";
     public static final String HLS_BASE_URL = "-hls_base_url";
 
 
@@ -91,9 +91,9 @@ public class BaseCommandOption {
 
     public static List<String> toHLSCmdArrays(String m3u8Output, int cutSecond, String tsBaseUrl) {
         return Lists.newArrayList(
-                CV,FORMAT_LIB264,
-                CA,FORMAT_ACC,
-                STRICT,"-2",
+//                CV,FORMAT_LIB264,
+//                CA,FORMAT_ACC,
+//                STRICT,"-2",
                 F,FORMAT_HLS,
                 HLS_TIME,String.valueOf(cutSecond),
                 HLS_LIST_SIZE,"0",
