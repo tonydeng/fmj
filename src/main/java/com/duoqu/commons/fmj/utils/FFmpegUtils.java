@@ -18,7 +18,7 @@ public class FFmpegUtils {
     private static final String regexDuration = "Duration: (.*?), start: (.*?), bitrate: (\\d*) kb\\/s";
     private static final String regexVideo = "Video: (.*?), (.*?), (.*?)[,\\s]";
     private static final String regexAudio = "Audio: (\\w*), (\\d*) Hz";
-    private static final String regexRotate = "rotate          : (.*?) ";
+    private static final String regexRotate = "rotate (.*?): (\\d*)(\\d*)";
 
     /**
      * @param stdout
@@ -60,7 +60,11 @@ public class FFmpegUtils {
                 if (null != wh && wh.length == 2) {
                     vi.setResolution(new VideoResolution(Integer.valueOf(wh[0]), Integer.valueOf(wh[1])));
                 }
-                vi.setFormat(matcherVideo.group(1));
+                String format = matcherVideo.group(1);
+                if (StringUtils.isNotBlank(format)) {
+                    vi.setFormat(format.split(" ")[0]);
+                }
+
             }
 //            Pattern patternAudio = Pattern.compile(regexAudio);
 //            Matcher matcherAudio = patternAudio.matcher(info);
@@ -73,15 +77,15 @@ public class FFmpegUtils {
 
             Pattern patternRotate = Pattern.compile(regexRotate);
             Matcher matcherRotate = patternRotate.matcher(stdout);
-            if(matcherRotate.find()){
-                for(int i=0;i<matcherRotate.groupCount();i++){
-                    if(log.isDebugEnabled()){
-                        log.debug("index {} : rotate:'{}'",i,matcherRotate.group(i));
-                    }
-                }
-                String rotate = matcherRotate.group(0);
-                if(rotate.indexOf(":") > 0){
-                    vi.setRotate(Integer.valueOf(rotate.substring(rotate.indexOf(":")+1,rotate.length()).trim()));
+            if (matcherRotate.find()) {
+//                for (int i = 0; i < matcherRotate.groupCount(); i++) {
+//                    if (log.isDebugEnabled()) {
+//                        log.debug("index {} : rotate:'{}'", i, matcherRotate.group(i));
+//                    }
+//                }
+                String rotate = matcherRotate.group(2);
+                if(StringUtils.isNumeric(rotate)){
+                    vi.setRotate(Integer.valueOf(rotate));
                 }
             }
             return vi;
@@ -90,9 +94,9 @@ public class FFmpegUtils {
     }
 
 
-
     /**
      * 构建ffmpeg命令
+     *
      * @param commands
      * @return
      */

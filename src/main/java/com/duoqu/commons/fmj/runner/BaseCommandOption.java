@@ -19,11 +19,13 @@ public class BaseCommandOption {
     private static boolean isWin = false;
     private static boolean isLinux = false;
     private static List<String> FFMPEG_BINARY;
+    private static List<String> FFPROBE_BINARY;
 
     public static final String WINCMD = "cmd";
     public static final String WINCMDOP = "/c";
     public static final String LINUXCMD = "/usr/bin/env";
     public static final String FFMPEG = "ffmpeg";
+    public static final String FFPROBE = "ffprobe";
 
     public static final String Y = "-y";
     public static final String INPUT = "-i";
@@ -41,13 +43,14 @@ public class BaseCommandOption {
     public static final String FORMAT_HLS = "hls";
     public static final String FORMAT_IMAGE = "image2";
     public static final String FORMAT_LIB264 = "libx264";
-    public static final String FORMAT_ACC = "acc";
+    public static final String FORMAT_ACC = "aac";
 
     public static final String HLS_TIME = "-hls_time";
     public static final String HLS_LIST_SIZE = "-hls_list_size";
     public static final String HLS_WRAP = "-hls_wrap";
     public static final String HLS_BASE_URL = "-hls_base_url";
 
+    public static final  String UTF8 = "utf-8";
 
     static {
         String env = System.getProperty("os.name");
@@ -67,7 +70,7 @@ public class BaseCommandOption {
         }
     }
 
-    public static List<String> getFfmpegBinary() {
+    public static List<String> getFFmpegBinary() {
         if (FFMPEG_BINARY == null) {
             if (isWin) {
                 FFMPEG_BINARY = Lists.newArrayList(WINCMD, WINCMDOP, FFMPEG);
@@ -76,6 +79,17 @@ public class BaseCommandOption {
             }
         }
         return FFMPEG_BINARY;
+    }
+
+    public static List<String> getFFprobeBinary(){
+        if(null == FFPROBE_BINARY){
+            if(isWin){
+                FFPROBE_BINARY = Lists.newArrayList(WINCMD,WINCMDOP,FFPROBE);
+            }else if(isLinux){
+                FFPROBE_BINARY = Lists.newArrayList(LINUXCMD,FFPROBE);
+            }
+        }
+        return FFPROBE_BINARY;
     }
 
     public static List<String> toInputCommonsCmdArrays(String input) {

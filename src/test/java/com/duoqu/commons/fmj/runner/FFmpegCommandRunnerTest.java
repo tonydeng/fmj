@@ -30,7 +30,7 @@ class FFmpegCommandRunnerTest extends BaseTest {
         }
     }
 
-    @Test
+//    @Test
     public void screenshotTest() {
         for (File input : inputs) {
             File output = FFmpegCommandRunner.screenshot(input,
@@ -39,7 +39,7 @@ class FFmpegCommandRunnerTest extends BaseTest {
         }
     }
 
-//    @Test
+    @Test
     public void generationHlsTest(){
         for(File input:inputs){
             HLS hls=  FFmpegCommandRunner.generationHls(input,3,"http://p.wuguangchang.com/hls/");

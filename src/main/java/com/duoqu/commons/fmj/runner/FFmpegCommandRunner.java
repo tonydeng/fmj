@@ -16,10 +16,8 @@ import java.util.List;
  */
 public class FFmpegCommandRunner {
     private static final Logger log = LoggerFactory.getLogger(FFmpegCommandRunner.class);
-    public static ProcessBuilder pb = null;
-    public static Process pro = null;
-
-    private volatile static boolean isRunning = false;
+    private static ProcessBuilder pb = null;
+    private static Process pro = null;
 
     /**
      * 获取视频信息
@@ -29,31 +27,32 @@ public class FFmpegCommandRunner {
      */
     public static VideoInfo getVideoInfo(File input) {
         if (input != null && input.exists()) {
-            List<String> commands = Lists.newArrayList(BaseCommandOption.getFfmpegBinary());
-            commands.addAll(BaseCommandOption.toInputCommonsCmdArrays(input.getAbsolutePath()));
-            if (log.isInfoEnabled())
-                log.info("get video info commands : '{}'", FFmpegUtils.ffmpegCmdLine(commands));
+            List<String> commands = Lists.newArrayList(BaseCommandOption.getFFprobeBinary());
+            commands.add(input.getAbsolutePath());
+//            if (log.isInfoEnabled())
+//                log.info("get video info commands : '{}'", FFmpegUtils.ffmpegCmdLine(commands));
             try {
-                pb = new ProcessBuilder();
-                pb.command(commands);
+//                pb = new ProcessBuilder();
+//                pb.command(commands);
+//
+//                pb.redirectErrorStream(true);
+//
+//
+//                pro = pb.start();
+//                BufferedReader buf = null;
+//                buf = new BufferedReader(new InputStreamReader(pro.getInputStream()));
+//                StringBuffer sb = new StringBuffer();
+//                String line = null;
+//                while ((line = buf.readLine()) != null) {
+//                    sb.append(line);
+//                    continue;
+//                }
+//
+//                int ret = pro.waitFor();
+//                if (log.isInfoEnabled())
+//                    log.info("get video info process run status:'{}'", ret);
 
-                pb.redirectErrorStream(true);
-
-
-                pro = pb.start();
-                BufferedReader buf = null;
-                buf = new BufferedReader(new InputStreamReader(pro.getInputStream()));
-                StringBuffer sb = new StringBuffer();
-                String line = null;
-                while ((line = buf.readLine()) != null) {
-                    sb.append(line);
-                    continue;
-                }
-
-                int ret = pro.waitFor();
-                if (log.isInfoEnabled())
-                    log.info("get video info process run status:'{}'", ret);
-                VideoInfo mi = FFmpegUtils.regInfo(sb.toString());
+                VideoInfo mi = FFmpegUtils.regInfo(runProcess(commands, null));
                 mi.setSize(new FileInputStream(input).available());
                 return mi;
             } catch (IOException e) {
@@ -63,6 +62,10 @@ public class FFmpegCommandRunner {
             } catch (InterruptedException e) {
                 if (log.isErrorEnabled())
                     log.error("video '{}' get info InterruptedException :'{} '", input.getAbsoluteFile(), e.getCause().getMessage());
+                e.printStackTrace();
+            } catch (Exception e) {
+                if (log.isErrorEnabled())
+                    log.error("video '{}' get info Exception :'{} '", input.getAbsoluteFile(), e.getCause().getMessage());
                 e.printStackTrace();
             }
         } else {
@@ -84,7 +87,7 @@ public class FFmpegCommandRunner {
         File output = FileUtils.getSrceentshotOutputByInput(input);
         if (output != null) {
             VideoInfo vi = getVideoInfo(input);
-            List<String> commands = Lists.newArrayList(BaseCommandOption.getFfmpegBinary());
+            List<String> commands = Lists.newArrayList(BaseCommandOption.getFFmpegBinary());
             commands.addAll(BaseCommandOption.toScreenshotCmdArrays(input.getAbsolutePath(), output.getAbsolutePath(), shotSecond, vi));
             if (log.isInfoEnabled()) {
                 log.info("screenshot commands :'{}'", FFmpegUtils.ffmpegCmdLine(commands));
@@ -127,7 +130,7 @@ public class FFmpegCommandRunner {
         File output = FileUtils.getM3U8OutputByInput(input);
         if (output != null) {
             VideoInfo vi = getVideoInfo(input);
-            List<String> commands = Lists.newArrayList(BaseCommandOption.getFfmpegBinary());
+            List<String> commands = Lists.newArrayList(BaseCommandOption.getFFmpegBinary());
             commands.addAll(BaseCommandOption.toHLSCmdArrays(input.getAbsolutePath(), output.getAbsolutePath(), cutSecond, tsBaseUrl, vi));
             if (log.isInfoEnabled()) {
                 log.info("generation HLS commands : '{}'", FFmpegUtils.ffmpegCmdLine(commands));
@@ -159,5 +162,40 @@ public class FFmpegCommandRunner {
         }
 
         return null;
+    }
+
+    private static String runProcess(List<String> commands, ProcessCallbackHandler handler) throws Exception {
+        if (log.isDebugEnabled())
+            log.debug("start to run ffmpeg process... cmd : '{}'", FFmpegUtils.ffmpegCmdLine(commands));
+        pb = new ProcessBuilder();
+        pb.command(commands);
+
+        pro = pb.start();
+
+        if (null == handler) {
+            handler = new DefaultProcessCallbackHandler();
+        }
+        if (log.isInfoEnabled())
+            log.info("inpuStream:'{}'", handler.handler(pro.getInputStream()));
+
+        String result = null;
+        try {
+            result = handler.handler(pro.getErrorStream());
+        } catch (Exception e) {
+            log.error("errorStream:{}", result, e);
+        }
+
+        try {
+            int flag = pro.waitFor();
+            if (flag != 0) {
+                throw new IllegalThreadStateException("process exit with error value : " + flag);
+            }
+        } catch (InterruptedException e) {
+            log.error("wait for process finish error:{}", e);
+        } finally {
+            if (null != pro)
+                pro.destroy();
+        }
+        return result;
     }
 }
