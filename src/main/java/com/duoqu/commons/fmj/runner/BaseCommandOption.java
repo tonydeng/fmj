@@ -43,7 +43,7 @@ public class BaseCommandOption {
     public static final String FORMAT_HLS = "hls";
     public static final String FORMAT_IMAGE = "image2";
     public static final String FORMAT_LIB264 = "libx264";
-    public static final String FORMAT_ACC = "acc";
+    public static final String FORMAT_ACC = "aac";
 
     public static final String HLS_TIME = "-hls_time";
     public static final String HLS_LIST_SIZE = "-hls_list_size";
