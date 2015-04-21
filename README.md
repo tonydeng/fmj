@@ -2,6 +2,8 @@
 
 ## FMJ (FFMpeg for Java)
 
+![FMJ Logo](fmj.jpg)
+
 通过Java调用FFMpeg命令的方式来对音视频进行处理（获取信息、截图等等）。
 
 
