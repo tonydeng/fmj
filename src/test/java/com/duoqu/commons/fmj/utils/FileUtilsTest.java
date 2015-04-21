@@ -2,6 +2,7 @@ package com.duoqu.commons.fmj.utils;
 
 import com.duoqu.commons.fmj.BaseTest;
 import com.google.common.collect.Lists;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -10,6 +11,7 @@ import java.util.List;
 /**
  * Created by tonydeng on 15/4/17.
  */
+@Ignore
 public class FileUtilsTest extends BaseTest {
 //    @Test
     public void createDirectoryTest() {

@@ -20,13 +20,20 @@ public class FFmpegUtils {
     private static final String regexAudio = "Audio: (\\w*), (\\d*) Hz";
     private static final String regexRotate = "rotate (.*?): (\\d*)(\\d*)";
 
+    public static VideoInfo regInfo(String stdout) {
+        return regInfo(stdout, null);
+    }
+
     /**
      * @param stdout
      * @return
      */
-    public static VideoInfo regInfo(String stdout) {
+    public static VideoInfo regInfo(String stdout, VideoInfo vi) {
         if (StringUtils.isNotEmpty(stdout)) {
-            VideoInfo vi = new VideoInfo();
+            if (vi == null) {
+                vi = new VideoInfo();
+            }
+
             Pattern patternDuration = Pattern.compile(regexDuration);
             Matcher matcherDuration = patternDuration.matcher(stdout);
             if (matcherDuration.find()) {
@@ -84,7 +91,7 @@ public class FFmpegUtils {
 //                    }
 //                }
                 String rotate = matcherRotate.group(2);
-                if(StringUtils.isNumeric(rotate)){
+                if (StringUtils.isNumeric(rotate)) {
                     vi.setRotate(Integer.valueOf(rotate));
                 }
             }

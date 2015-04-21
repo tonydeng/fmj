@@ -1,6 +1,7 @@
 package com.duoqu.commons.fmj.runner;
 
 import com.duoqu.commons.fmj.BaseTest;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 /**
  * Created by tonydeng on 15/4/20.
  */
+@Ignore
 public class BaseCommandOptionTest extends BaseTest{
     @Test
     public void getFFprobeBinaryTest(){

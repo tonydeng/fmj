@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by tonydeng on 15/4/16.
  */
-//@Ignore
+@Ignore
 public
 class FFmpegCommandRunnerTest extends BaseTest {
     private static final List<File> inputs = Lists.newArrayList(

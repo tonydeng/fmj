@@ -9,7 +9,10 @@ public class VideoInfo {
     private long duration;
     private VideoResolution resolution;
     private int rotate;
-
+    public VideoInfo(){}
+    public VideoInfo(long size){
+        setSize(size);
+    }
     public String getFormat() {
         return format;
     }

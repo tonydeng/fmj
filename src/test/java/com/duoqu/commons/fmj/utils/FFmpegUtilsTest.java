@@ -2,6 +2,7 @@ package com.duoqu.commons.fmj.utils;
 
 import com.duoqu.commons.fmj.BaseTest;
 import com.duoqu.commons.fmj.model.VideoInfo;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.regex.Matcher;
@@ -10,6 +11,7 @@ import java.util.regex.Pattern;
 /**
  * Created by tonydeng on 15/4/17.
  */
+@Ignore
 public class FFmpegUtilsTest extends BaseTest {
     private static final String stdout = "ffprobe version 2.6.1 Copyright (c) 2007-2015 the FFmpeg developers\n" +
             "  built with Apple LLVM version 6.0 (clang-600.0.57) (based on LLVM 3.5svn)\n" +

@@ -27,11 +27,13 @@ public class FFmpegCommandRunner {
      */
     public static VideoInfo getVideoInfo(File input) {
         if (input != null && input.exists()) {
+
             List<String> commands = Lists.newArrayList(BaseCommandOption.getFFprobeBinary());
             commands.add(input.getAbsolutePath());
 //            if (log.isInfoEnabled())
 //                log.info("get video info commands : '{}'", FFmpegUtils.ffmpegCmdLine(commands));
             try {
+                VideoInfo vi = new VideoInfo(new FileInputStream(input).available());
 //                pb = new ProcessBuilder();
 //                pb.command(commands);
 //
@@ -51,10 +53,8 @@ public class FFmpegCommandRunner {
 //                int ret = pro.waitFor();
 //                if (log.isInfoEnabled())
 //                    log.info("get video info process run status:'{}'", ret);
-
-                VideoInfo mi = FFmpegUtils.regInfo(runProcess(commands, null));
-                mi.setSize(new FileInputStream(input).available());
-                return mi;
+                FFmpegUtils.regInfo(runProcess(commands, null), vi);
+                return vi;
             } catch (IOException e) {
                 if (log.isErrorEnabled())
                     log.error("video '{}' get info IOException :'{} '", input.getAbsoluteFile(), e.getCause().getMessage());

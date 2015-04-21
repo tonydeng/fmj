@@ -99,7 +99,7 @@ public class BaseCommandOption {
     }
 
     public static List<String> toScreenshotCmdArrays(String input, String output, int shotSecond, VideoInfo vi) {
-        if (vi != null) {
+        if (vi != null && vi.getSize() > 0) {
             List<String> commands = Lists.newArrayList();
             if (vi.getDuration() < Long.valueOf(shotSecond).longValue()) {
                 shotSecond = 1;
@@ -127,11 +127,11 @@ public class BaseCommandOption {
             commands.add(output);
             return commands;
         }
-        return Collections.emptyList();
+        return Collections.EMPTY_LIST;
     }
 
     public static List<String> toHLSCmdArrays(String input, String m3u8Output, int cutSecond, String tsBaseUrl, VideoInfo vi) {
-        if (vi != null) {
+        if (vi != null && vi.getSize() > 0) {
             List<String> commands = Lists.newArrayList(toInputCommonsCmdArrays(input));
             commands.addAll(Lists.newArrayList(CV, FORMAT_LIB264,
                     CA, FORMAT_ACC,
