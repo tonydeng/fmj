@@ -22,8 +22,8 @@ public class DefaultProcessCallbackHandler implements ProcessCallbackHandler{
         try {
             while ((line = reader.readLine()) != null){
                 sb.append(line).append("\n");
-                if(log.isDebugEnabled())
-                    log.debug(line);
+//                if(log.isDebugEnabled())
+//                    log.debug(line);
             }
         }catch (IOException e){
             log.error("read from process error : '{}'",e);

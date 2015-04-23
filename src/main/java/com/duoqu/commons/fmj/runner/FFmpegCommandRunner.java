@@ -1,15 +1,19 @@
 package com.duoqu.commons.fmj.runner;
 
 import com.duoqu.commons.fmj.model.HLS;
+import com.duoqu.commons.fmj.model.VideoFile;
 import com.duoqu.commons.fmj.model.VideoInfo;
 import com.duoqu.commons.fmj.utils.FFmpegUtils;
 import com.duoqu.commons.fmj.utils.FileUtils;
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by tonydeng on 15/4/16.
@@ -26,54 +30,20 @@ public class FFmpegCommandRunner {
      * @return
      */
     public static VideoInfo getVideoInfo(File input) {
+        VideoInfo vi = new VideoInfo();
         if (input != null && input.exists()) {
-
             List<String> commands = Lists.newArrayList(BaseCommandOption.getFFprobeBinary());
             commands.add(input.getAbsolutePath());
-//            if (log.isInfoEnabled())
-//                log.info("get video info commands : '{}'", FFmpegUtils.ffmpegCmdLine(commands));
-            try {
-                VideoInfo vi = new VideoInfo(new FileInputStream(input).available());
-//                pb = new ProcessBuilder();
-//                pb.command(commands);
-//
-//                pb.redirectErrorStream(true);
-//
-//
-//                pro = pb.start();
-//                BufferedReader buf = null;
-//                buf = new BufferedReader(new InputStreamReader(pro.getInputStream()));
-//                StringBuffer sb = new StringBuffer();
-//                String line = null;
-//                while ((line = buf.readLine()) != null) {
-//                    sb.append(line);
-//                    continue;
-//                }
-//
-//                int ret = pro.waitFor();
-//                if (log.isInfoEnabled())
-//                    log.info("get video info process run status:'{}'", ret);
-                FFmpegUtils.regInfo(runProcess(commands, null), vi);
-                return vi;
-            } catch (IOException e) {
-                if (log.isErrorEnabled())
-                    log.error("video '{}' get info IOException :'{} '", input.getAbsoluteFile(), e.getCause().getMessage());
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                if (log.isErrorEnabled())
-                    log.error("video '{}' get info InterruptedException :'{} '", input.getAbsoluteFile(), e.getCause().getMessage());
-                e.printStackTrace();
-            } catch (Exception e) {
-                if (log.isErrorEnabled())
-                    log.error("video '{}' get info Exception :'{} '", input.getAbsoluteFile(), e.getCause().getMessage());
-                e.printStackTrace();
+            vi.setSize(FileUtils.getFineSize(input));
+            if (vi.getSize() > 0) {
+                return FFmpegUtils.regInfo(runProcess(commands), vi);
             }
         } else {
             if (log.isErrorEnabled())
                 log.error("video '{}' is not fount! ", input.getAbsolutePath());
         }
 
-        return null;
+        return vi;
     }
 
     /**
@@ -89,27 +59,30 @@ public class FFmpegCommandRunner {
             VideoInfo vi = getVideoInfo(input);
             List<String> commands = Lists.newArrayList(BaseCommandOption.getFFmpegBinary());
             commands.addAll(BaseCommandOption.toScreenshotCmdArrays(input.getAbsolutePath(), output.getAbsolutePath(), shotSecond, vi));
-            if (log.isInfoEnabled()) {
-                log.info("screenshot commands :'{}'", FFmpegUtils.ffmpegCmdLine(commands));
-            }
-            try {
-                pb = new ProcessBuilder();
-                pb.command(commands);
-                pb.redirectErrorStream(true);
-                pro = pb.start();
-                int ret = pro.waitFor();
-                if (log.isInfoEnabled())
-                    log.info("screent process run status:'{}'", ret);
-                if (output != null && output.exists())
-                    return output;
-            } catch (IOException e) {
-                if (log.isErrorEnabled())
-                    log.error("video '{}' screenshot IOException :'{} '", input.getAbsoluteFile(), e.getCause().getMessage());
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                if (log.isErrorEnabled())
-                    log.error("video '{}' screenshot InterruptedException :'{} '", input.getAbsoluteFile(), e.getCause().getMessage());
-                e.printStackTrace();
+//            if (log.isInfoEnabled()) {
+//                log.info("screenshot commands :'{}'", FFmpegUtils.ffmpegCmdLine(commands));
+//            }
+//            try {
+//                pb = new ProcessBuilder();
+//                pb.command(commands);
+//                pb.redirectErrorStream(true);
+//                pro = pb.start();
+//                int ret = pro.waitFor();
+//                if (log.isInfoEnabled())
+//                    log.info("screent process run status:'{}'", ret);
+//                if (output != null && output.exists())
+//                    return output;
+//            } catch (IOException e) {
+//                if (log.isErrorEnabled())
+//                    log.error("video '{}' screenshot IOException :'{} '", input.getAbsoluteFile(), e.getCause().getMessage());
+//                e.printStackTrace();
+//            } catch (InterruptedException e) {
+//                if (log.isErrorEnabled())
+//                    log.error("video '{}' screenshot InterruptedException :'{} '", input.getAbsoluteFile(), e.getCause().getMessage());
+//                e.printStackTrace();
+//            }
+            if (StringUtils.isNotEmpty(runProcess(commands))) {
+                return output;
             }
         } else {
             if (log.isErrorEnabled())
@@ -132,28 +105,34 @@ public class FFmpegCommandRunner {
             VideoInfo vi = getVideoInfo(input);
             List<String> commands = Lists.newArrayList(BaseCommandOption.getFFmpegBinary());
             commands.addAll(BaseCommandOption.toHLSCmdArrays(input.getAbsolutePath(), output.getAbsolutePath(), cutSecond, tsBaseUrl, vi));
-            if (log.isInfoEnabled()) {
-                log.info("generation HLS commands : '{}'", FFmpegUtils.ffmpegCmdLine(commands));
-            }
-            pb = new ProcessBuilder();
-            pb.command(commands);
-            try {
-                pro = pb.start();
-                int ret = pro.waitFor();
-                if (log.isInfoEnabled())
-                    log.info("screent process run status:'{}'", ret);
+//            if (log.isInfoEnabled()) {
+//                log.info("generation HLS commands : '{}'", FFmpegUtils.ffmpegCmdLine(commands));
+//            }
+//            pb = new ProcessBuilder();
+//            pb.command(commands);
+//            try {
+//                pro = pb.start();
+//                int ret = pro.waitFor();
+//                if (log.isInfoEnabled())
+//                    log.info("screent process run status:'{}'", ret);
+//                HLS hls = new HLS();
+//                hls.setM3u8(output);
+//                hls.setTs(FileUtils.findTS(output));
+//                return hls;
+//            } catch (IOException e) {
+//                if (log.isErrorEnabled())
+//                    log.error("video '{}' generationHls IOException :'{} '", input.getAbsoluteFile(), e.getCause().getMessage());
+//                e.printStackTrace();
+//            } catch (InterruptedException e) {
+//                if (log.isErrorEnabled())
+//                    log.error("video '{}' generationHls InterruptedException :'{} '", input.getAbsoluteFile(), e.getCause().getMessage());
+//                e.printStackTrace();
+//            }
+            if (StringUtils.isNotEmpty(runProcess(commands))) {
                 HLS hls = new HLS();
                 hls.setM3u8(output);
                 hls.setTs(FileUtils.findTS(output));
                 return hls;
-            } catch (IOException e) {
-                if (log.isErrorEnabled())
-                    log.error("video '{}' generationHls IOException :'{} '", input.getAbsoluteFile(), e.getCause().getMessage());
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                if (log.isErrorEnabled())
-                    log.error("video '{}' generationHls InterruptedException :'{} '", input.getAbsoluteFile(), e.getCause().getMessage());
-                e.printStackTrace();
             }
 
         } else {
@@ -164,9 +143,59 @@ public class FFmpegCommandRunner {
         return null;
     }
 
+    /**
+     * 转换视频格式为MP4
+     *
+     * @param input
+     * @return
+     */
+    public static VideoFile coverToMp4(File input) {
+        VideoFile vf = new VideoFile(input, FileUtils.getMp4OutputByInput(input));
+        if (vf.getTarget() != null) {
+            vf.setInputInfo(getVideoInfo(input));
+            if (vf.getInputInfo().getSize() > 0
+                    && !BaseCommandOption.H264.equals(vf.getInputInfo().getFormat())) {
+                List<String> commands = Lists.newArrayList(BaseCommandOption.getFFmpegBinary());
+                commands.addAll(BaseCommandOption.toMP4CmdArrays(input.getAbsolutePath(), vf.getTarget().getAbsolutePath()));
+
+                if (StringUtils.isNotEmpty(runProcess(commands))) {
+                    vf.setTargetInfo(getVideoInfo(vf.getTarget()));
+                    vf.setSuccess(true);
+                    return vf;
+                }
+            }
+
+        }
+        return vf;
+    }
+
+    /**
+     * 执行命令
+     *
+     * @param commands
+     * @return
+     */
+    private static String runProcess(List<String> commands) {
+        try {
+            return runProcess(commands, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 执行命令
+     *
+     * @param commands
+     * @param handler
+     * @return
+     * @throws Exception
+     */
     private static String runProcess(List<String> commands, ProcessCallbackHandler handler) throws Exception {
         if (log.isDebugEnabled())
             log.debug("start to run ffmpeg process... cmd : '{}'", FFmpegUtils.ffmpegCmdLine(commands));
+        Stopwatch stopwatch = Stopwatch.createStarted();
         pb = new ProcessBuilder();
         pb.command(commands);
 
@@ -195,6 +224,12 @@ public class FFmpegCommandRunner {
         } finally {
             if (null != pro)
                 pro.destroy();
+            stopwatch.stop();
+        }
+        if (log.isInfoEnabled()) {
+            log.info("ffmpeg run {} seconds, {} milliseconds",
+                    stopwatch.elapsed(TimeUnit.SECONDS),
+                    stopwatch.elapsed(TimeUnit.MILLISECONDS));
         }
         return result;
     }

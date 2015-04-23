@@ -50,7 +50,9 @@ public class BaseCommandOption {
     public static final String HLS_WRAP = "-hls_wrap";
     public static final String HLS_BASE_URL = "-hls_base_url";
 
-    public static final  String UTF8 = "utf-8";
+
+    public static final String H264 = "h264";
+    public static final String UTF8 = "utf-8";
 
     static {
         String env = System.getProperty("os.name");
@@ -81,12 +83,12 @@ public class BaseCommandOption {
         return FFMPEG_BINARY;
     }
 
-    public static List<String> getFFprobeBinary(){
-        if(null == FFPROBE_BINARY){
-            if(isWin){
-                FFPROBE_BINARY = Lists.newArrayList(WINCMD,WINCMDOP,FFPROBE);
-            }else if(isLinux){
-                FFPROBE_BINARY = Lists.newArrayList(LINUXCMD,FFPROBE);
+    public static List<String> getFFprobeBinary() {
+        if (null == FFPROBE_BINARY) {
+            if (isWin) {
+                FFPROBE_BINARY = Lists.newArrayList(WINCMD, WINCMDOP, FFPROBE);
+            } else if (isLinux) {
+                FFPROBE_BINARY = Lists.newArrayList(LINUXCMD, FFPROBE);
             }
         }
         return FFPROBE_BINARY;
@@ -109,7 +111,7 @@ public class BaseCommandOption {
 
             commands.addAll(toInputCommonsCmdArrays(input));
 
-            if(vi.getRotate() > 0){
+            if (vi.getRotate() > 0) {
                 //-vf "transpose=1" -c:a copy
                 commands.add(VF);
                 commands.add("transpose=1");
@@ -121,7 +123,6 @@ public class BaseCommandOption {
             commands.add(Y);
             commands.add(F);
             commands.add(FORMAT_IMAGE);
-
 
 
             commands.add(output);
@@ -146,5 +147,16 @@ public class BaseCommandOption {
             return commands;
         }
         return Collections.EMPTY_LIST;
+    }
+
+    public static List<String> toMP4CmdArrays(String input, String output) {
+        List<String> commands = Lists.newArrayList(toInputCommonsCmdArrays(input));
+        commands.addAll(Lists.newArrayList(
+                CV, FORMAT_LIB264,
+                CA, FORMAT_ACC,
+                STRICT, "-2",
+                output
+        ));
+        return commands;
     }
 }
