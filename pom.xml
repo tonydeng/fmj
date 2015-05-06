@@ -9,7 +9,11 @@
 
     <name>fmj</name>
     <url>http://maven.apache.org</url>
-
+    <scm>
+        <connection>scm:git:git@gitlab.duoquyuedu.com:commons/fmj.git</connection>
+        <developerConnection>scm:git:git@gitlab.duoquyuedu.com:commons/fmj.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>4.12</junit.version>
@@ -155,5 +159,14 @@
             </snapshots>
         </repository>
     </repositories>
-
+    <distributionManagement>
+        <repository>
+            <id>duoqu-maven-repository</id>
+            <url>sftp://mvn.dq.in/dq/maven</url>
+        </repository>
+        <snapshotRepository>
+            <id>duoqu-maven-repository-snapshots</id>
+            <url>sftp://mvn.dq.in/dq/maven/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

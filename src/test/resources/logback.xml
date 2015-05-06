@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="stdoutAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+		</layout>
+	</appender>
+		
+
+	<logger name="com.duoqu" level="DEBUG" />
+    <logger name="com.duoqu.muse.dao.repository" level="ERROR" />
+	<logger name="org.springframework" level="ERROR" />
+	<logger name="org.quartz" level="ERROR" />
+	<logger name="ch.qos" level="ERROR" />
+	<logger name="org.apache" level="ERROR" />
+	<logger name="java.sql" level="ERROR" />
+	<logger name="httpclient.wire" level="ERROR" />
+	<logger name="org.hibernate" level="ERROR" />
+	<logger name="org.mybatis" level="ERROR" />
+	<logger name="freemarker.cache" level="ERROR" />
+	<logger name="org.apache.hadoop" level="ERROR" />
+    <logger name="druid.sql" level="ERROR" />
+    <logger name="com.alibaba" level="ERROR" />
+
+    <root level="DEBUG">
+        <appender-ref ref="stdoutAppender"/>
+    </root>
+
+
+</configuration> 
