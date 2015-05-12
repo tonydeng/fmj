@@ -1,4 +1,4 @@
-package com.duoqu.commons.fmj.hanler;
+package com.duoqu.commons.fmj.handler;
 
 import com.duoqu.commons.fmj.runner.BaseCommandOption;
 import org.slf4j.Logger;
@@ -15,7 +15,6 @@ import java.io.InputStreamReader;
 public class DefaultCallbackHandler implements ProcessCallbackHandler{
     private  static final Logger log = LoggerFactory.getLogger(DefaultCallbackHandler.class);
 
-    private String result;
     public String handler(InputStream inputStream) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, BaseCommandOption.UTF8));
         StringBuffer sb = new StringBuffer();
@@ -30,22 +29,14 @@ public class DefaultCallbackHandler implements ProcessCallbackHandler{
             log.error("read from process error : '{}'",e);
             throw e;
         }finally {
-            try {
-                inputStream.close();
-            }catch (IOException e){
-                log.error("close errorStream error: '{}'",e);
-            }
+//            try {
+//                inputStream.close();
+//            }catch (IOException e){
+//                log.error("close errorStream error: '{}'",e);
+//            }
         }
-        setResult(sb.toString());
 
-        return getResult();
+        return sb.toString();
     }
 
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
-    }
 }

@@ -1,4 +1,4 @@
-package com.duoqu.commons.fmj.hanler;
+package com.duoqu.commons.fmj.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,10 +16,10 @@ public class ScannerCallbackHandler implements ProcessCallbackHandler {
         Scanner scanner = new Scanner(inputStream);
         StringBuffer sb = new StringBuffer();
         while (scanner.hasNextLine()){
-            sb.append(scanner.nextLine());
+            sb.append(scanner.nextLine()).append("\n");
         }
-        if(log.isDebugEnabled())
-            log.debug(sb.toString());
+//        if(log.isDebugEnabled())
+//            log.debug(sb.toString());
         return sb.toString();
     }
 }

@@ -1,8 +1,8 @@
 package com.duoqu.commons.fmj.runner;
 
-import com.duoqu.commons.fmj.hanler.DefaultCallbackHandler;
-import com.duoqu.commons.fmj.hanler.ProcessCallbackHandler;
-import com.duoqu.commons.fmj.hanler.ScannerCallbackHandler;
+import com.duoqu.commons.fmj.handler.DefaultCallbackHandler;
+import com.duoqu.commons.fmj.handler.ProcessCallbackHandler;
+import com.duoqu.commons.fmj.handler.ScannerCallbackHandler;
 import com.duoqu.commons.fmj.model.HLS;
 import com.duoqu.commons.fmj.model.VideoFile;
 import com.duoqu.commons.fmj.model.VideoInfo;
