@@ -211,6 +211,12 @@ public class FFmpegCommandRunner {
             result = handler.handler(pro.getInputStream());
         } catch (Exception e) {
             log.error("errorStream:{}", result, e);
+        }finally {
+            if (null != pro) {
+                pro.getInputStream().close();
+                pro.getOutputStream().close();
+                pro.getErrorStream().close();
+            }
         }
 
         try {
@@ -222,9 +228,6 @@ public class FFmpegCommandRunner {
             log.error("wait for process finish error:{}", e);
         } finally {
             if (null != pro){
-                pro.getInputStream().close();
-                pro.getOutputStream().close();
-                pro.getErrorStream().close();
                 pro.destroy();
             }
 
