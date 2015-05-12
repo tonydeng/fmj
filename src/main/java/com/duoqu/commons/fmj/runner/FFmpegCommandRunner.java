@@ -222,8 +222,13 @@ public class FFmpegCommandRunner {
         } catch (InterruptedException e) {
             log.error("wait for process finish error:{}", e);
         } finally {
-            if (null != pro)
+            if (null != pro){
+                pro.getInputStream().close();
+                pro.getOutputStream().close();
+                pro.getErrorStream();
                 pro.destroy();
+            }
+
             stopwatch.stop();
         }
         if (log.isInfoEnabled()) {
