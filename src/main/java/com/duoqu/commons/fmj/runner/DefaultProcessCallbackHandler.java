@@ -15,8 +15,8 @@ public class DefaultProcessCallbackHandler implements ProcessCallbackHandler{
     private  static final Logger log = LoggerFactory.getLogger(DefaultProcessCallbackHandler.class);
 
     private String result;
-    public String handler(InputStream errorStream) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream,BaseCommandOption.UTF8));
+    public String handler(InputStream inputStream) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,BaseCommandOption.UTF8));
         StringBuffer sb = new StringBuffer();
         String line;
         try {
@@ -30,7 +30,7 @@ public class DefaultProcessCallbackHandler implements ProcessCallbackHandler{
             throw e;
         }finally {
             try {
-                errorStream.close();
+                inputStream.close();
             }catch (IOException e){
                 log.error("close errorStream error: '{}'",e);
             }

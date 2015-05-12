@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class FFmpegCommandRunner {
     private static final Logger log = LoggerFactory.getLogger(FFmpegCommandRunner.class);
     private static ProcessBuilder pb = null;
-    private static Process pro = null;
+    private static Process process = null;
 
     /**
      * 获取视频信息
@@ -196,11 +196,11 @@ public class FFmpegCommandRunner {
         if (log.isDebugEnabled())
             log.debug("start to run ffmpeg process... cmd : '{}'", FFmpegUtils.ffmpegCmdLine(commands));
         Stopwatch stopwatch = Stopwatch.createStarted();
-        pb = new ProcessBuilder();
-        pb.command(commands);
+        pb = new ProcessBuilder(commands);
+
         pb.redirectErrorStream(true);
 
-        pro = pb.start();
+        process = pb.start();
 
         if (null == handler) {
             handler = new DefaultProcessCallbackHandler();
@@ -208,27 +208,28 @@ public class FFmpegCommandRunner {
 
         String result = null;
         try {
-            result = handler.handler(pro.getInputStream());
+            result = handler.handler(process.getInputStream());
         } catch (Exception e) {
             log.error("errorStream:{}", result, e);
         }finally {
-            if (null != pro) {
-                pro.getInputStream().close();
-                pro.getOutputStream().close();
-                pro.getErrorStream().close();
+            if (null != process) {
+                process.getInputStream().close();
+                process.getOutputStream().close();
+                process.getErrorStream().close();
             }
         }
 
         try {
-            int flag = pro.waitFor();
+            int flag = process.waitFor();
             if (flag != 0) {
                 throw new IllegalThreadStateException("process exit with error value : " + flag);
             }
         } catch (InterruptedException e) {
             log.error("wait for process finish error:{}", e);
         } finally {
-            if (null != pro){
-                pro.destroy();
+            if (null != process){
+                process.destroy();
+                pb = null;
             }
 
             stopwatch.stop();
