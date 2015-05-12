@@ -1,5 +1,6 @@
-package com.duoqu.commons.fmj.runner;
+package com.duoqu.commons.fmj.hanler;
 
+import com.duoqu.commons.fmj.runner.BaseCommandOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,12 +12,12 @@ import java.io.InputStreamReader;
 /**
  * Created by tonydeng on 15/4/20.
  */
-public class DefaultProcessCallbackHandler implements ProcessCallbackHandler{
-    private  static final Logger log = LoggerFactory.getLogger(DefaultProcessCallbackHandler.class);
+public class DefaultCallbackHandler implements ProcessCallbackHandler{
+    private  static final Logger log = LoggerFactory.getLogger(DefaultCallbackHandler.class);
 
     private String result;
     public String handler(InputStream inputStream) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,BaseCommandOption.UTF8));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, BaseCommandOption.UTF8));
         StringBuffer sb = new StringBuffer();
         String line;
         try {

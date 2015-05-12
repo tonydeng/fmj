@@ -59,7 +59,7 @@ public class FFmpegCommandRunnerTest extends BaseTest {
         }
     }
 
-        @Test
+//        @Test
     public void screenshotTest() {
         for (File input : inputs) {
             File output = FFmpegCommandRunner.screenshot(input,
@@ -68,7 +68,7 @@ public class FFmpegCommandRunnerTest extends BaseTest {
         }
     }
 
-        @Test
+//        @Test
     public void generationHlsTest() {
         for (File input : inputs) {
             HLS hls = FFmpegCommandRunner.generationHls(input, 3, "http://p.wuguangchang.com/hls/");
@@ -81,7 +81,7 @@ public class FFmpegCommandRunnerTest extends BaseTest {
         }
     }
 
-    @Test
+//    @Test
     public void coverToMp4Test() {
         for (File input : inputs) {
             VideoFile vf = FFmpegCommandRunner.coverToMp4(input);

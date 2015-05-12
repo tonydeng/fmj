@@ -1,4 +1,4 @@
-package com.duoqu.commons.fmj.runner;
+package com.duoqu.commons.fmj.hanler;
 
 import java.io.InputStream;
 
@@ -6,5 +6,5 @@ import java.io.InputStream;
  * Created by tonydeng on 15/4/20.
  */
 public interface ProcessCallbackHandler {
-    String handler(InputStream errorStream) throws Exception;
+    String handler(InputStream inputStream) throws Exception;
 }
