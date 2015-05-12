@@ -151,7 +151,7 @@ public class FFmpegCommandRunner {
      */
     public static VideoFile coverToMp4(File input) {
         VideoFile vf = new VideoFile(input, FileUtils.getMp4OutputByInput(input));
-        if (vf.getTarget() != null) {
+        if (vf.getTarget() != null && !vf.getTarget().exists()) {
             vf.setInputInfo(getVideoInfo(input));
             if (vf.getInputInfo().getSize() > 0
                     && !BaseCommandOption.H264.equals(vf.getInputInfo().getFormat())) {
@@ -198,18 +198,17 @@ public class FFmpegCommandRunner {
         Stopwatch stopwatch = Stopwatch.createStarted();
         pb = new ProcessBuilder();
         pb.command(commands);
+        pb.redirectErrorStream(true);
 
         pro = pb.start();
 
         if (null == handler) {
             handler = new DefaultProcessCallbackHandler();
         }
-        if (log.isInfoEnabled())
-            log.info("inpuStream:'{}'", handler.handler(pro.getInputStream()));
 
         String result = null;
         try {
-            result = handler.handler(pro.getErrorStream());
+            result = handler.handler(pro.getInputStream());
         } catch (Exception e) {
             log.error("errorStream:{}", result, e);
         }
@@ -225,7 +224,7 @@ public class FFmpegCommandRunner {
             if (null != pro){
                 pro.getInputStream().close();
                 pro.getOutputStream().close();
-                pro.getErrorStream();
+                pro.getErrorStream().close();
                 pro.destroy();
             }
 
