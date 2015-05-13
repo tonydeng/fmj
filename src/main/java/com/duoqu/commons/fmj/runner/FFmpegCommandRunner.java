@@ -2,7 +2,6 @@ package com.duoqu.commons.fmj.runner;
 
 import com.duoqu.commons.fmj.handler.DefaultCallbackHandler;
 import com.duoqu.commons.fmj.handler.ProcessCallbackHandler;
-import com.duoqu.commons.fmj.handler.ScannerCallbackHandler;
 import com.duoqu.commons.fmj.model.HLS;
 import com.duoqu.commons.fmj.model.VideoFile;
 import com.duoqu.commons.fmj.model.VideoInfo;
@@ -40,7 +39,7 @@ public class FFmpegCommandRunner {
             commands.add(input.getAbsolutePath());
             vi.setSize(FileUtils.getFineSize(input));
             if (vi.getSize() > 0) {
-                return FFmpegUtils.regInfo(runProcess(commands,new ScannerCallbackHandler()), vi);
+                return FFmpegUtils.regInfo(runProcess(commands), vi);
             }
         } else {
             if (log.isErrorEnabled())
