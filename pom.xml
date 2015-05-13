@@ -20,6 +20,8 @@
         <logback.version>1.1.2</logback.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
         <guava.version>18.0</guava.version>
+        <javaav.project.version>0.8</javaav.project.version>
+        <platform>windows-x86_64</platform>
     </properties>
 
     <dependencies>
@@ -52,6 +54,99 @@
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.hoary.javaav</groupId>
+            <artifactId>JavaAV</artifactId>
+            <version>0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.7</version>
+        </dependency>
+        <!-- cc的分割线-->
+        <dependency>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>javacpp</artifactId>
+            <version>${javaav.project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bytedeco.javacpp-presets</groupId>
+            <artifactId>opencv</artifactId>
+            <version>2.4.9-${javaav.project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bytedeco.javacpp-presets</groupId>
+            <artifactId>ffmpeg</artifactId>
+            <version>2.2.1-${javaav.project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bytedeco.javacpp-presets</groupId>
+            <artifactId>flycapture</artifactId>
+            <version>1.7.17-${javaav.project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bytedeco.javacpp-presets</groupId>
+            <artifactId>libdc1394</artifactId>
+            <version>2.2.2-${javaav.project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bytedeco.javacpp-presets</groupId>
+            <artifactId>libfreenect</artifactId>
+            <version>0.4-${javaav.project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bytedeco.javacpp-presets</groupId>
+            <artifactId>videoinput</artifactId>
+            <version>0.200-${javaav.project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bytedeco.javacpp-presets</groupId>
+            <artifactId>artoolkitplus</artifactId>
+            <version>2.3.0-${javaav.project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bytedeco.javacpp-presets</groupId>
+            <artifactId>opencv</artifactId>
+            <version>2.4.9-${javaav.project.version}</version>
+            <classifier>${platform}</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.bytedeco.javacpp-presets</groupId>
+            <artifactId>ffmpeg</artifactId>
+            <version>2.2.1-${javaav.project.version}</version>
+            <classifier>${platform}</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.bytedeco.javacpp-presets</groupId>
+            <artifactId>flycapture</artifactId>
+            <version>1.7.17-${javaav.project.version}</version>
+            <classifier>${platform}</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.bytedeco.javacpp-presets</groupId>
+            <artifactId>libdc1394</artifactId>
+            <version>2.2.2-${javaav.project.version}</version>
+            <classifier>${platform}</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.bytedeco.javacpp-presets</groupId>
+            <artifactId>libfreenect</artifactId>
+            <version>0.4-${javaav.project.version}</version>
+            <classifier>${platform}</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.bytedeco.javacpp-presets</groupId>
+            <artifactId>videoinput</artifactId>
+            <version>0.200-${javaav.project.version}</version>
+            <classifier>${platform}</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.bytedeco.javacpp-presets</groupId>
+            <artifactId>artoolkitplus</artifactId>
+            <version>2.3.0-${javaav.project.version}</version>
+            <classifier>${platform}</classifier>
         </dependency>
     </dependencies>
     <build>
