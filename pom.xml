@@ -20,6 +20,8 @@
         <logback.version>1.1.2</logback.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
         <guava.version>18.0</guava.version>
+        <javaav.project.version>0.8</javaav.project.version>
+        <platform>windows-x86_64</platform>
     </properties>
 
     <dependencies>
