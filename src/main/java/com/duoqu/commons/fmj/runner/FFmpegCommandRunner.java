@@ -1,5 +1,8 @@
 package com.duoqu.commons.fmj.runner;
 
+import com.duoqu.commons.fmj.handler.DefaultCallbackHandler;
+import com.duoqu.commons.fmj.handler.ProcessCallbackHandler;
+import com.duoqu.commons.fmj.handler.ScannerCallbackHandler;
 import com.duoqu.commons.fmj.model.HLS;
 import com.duoqu.commons.fmj.model.VideoFile;
 import com.duoqu.commons.fmj.model.VideoInfo;
@@ -11,7 +14,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -21,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 public class FFmpegCommandRunner {
     private static final Logger log = LoggerFactory.getLogger(FFmpegCommandRunner.class);
     private static ProcessBuilder pb = null;
-    private static Process pro = null;
+    private static Process process = null;
 
     /**
      * 获取视频信息
@@ -36,7 +40,7 @@ public class FFmpegCommandRunner {
             commands.add(input.getAbsolutePath());
             vi.setSize(FileUtils.getFineSize(input));
             if (vi.getSize() > 0) {
-                return FFmpegUtils.regInfo(runProcess(commands), vi);
+                return FFmpegUtils.regInfo(runProcess(commands,new ScannerCallbackHandler()), vi);
             }
         } else {
             if (log.isErrorEnabled())
@@ -151,7 +155,7 @@ public class FFmpegCommandRunner {
      */
     public static VideoFile coverToMp4(File input) {
         VideoFile vf = new VideoFile(input, FileUtils.getMp4OutputByInput(input));
-        if (vf.getTarget() != null) {
+        if (vf.getTarget() != null && !vf.getTarget().exists()) {
             vf.setInputInfo(getVideoInfo(input));
             if (vf.getInputInfo().getSize() > 0
                     && !BaseCommandOption.H264.equals(vf.getInputInfo().getFormat())) {
@@ -192,38 +196,50 @@ public class FFmpegCommandRunner {
      * @return
      * @throws Exception
      */
-    private static String runProcess(List<String> commands, ProcessCallbackHandler handler) throws Exception {
+    private static String runProcess(List<String> commands, ProcessCallbackHandler handler) {
         if (log.isDebugEnabled())
             log.debug("start to run ffmpeg process... cmd : '{}'", FFmpegUtils.ffmpegCmdLine(commands));
         Stopwatch stopwatch = Stopwatch.createStarted();
-        pb = new ProcessBuilder();
-        pb.command(commands);
+        pb = new ProcessBuilder(commands);
 
-        pro = pb.start();
+        pb.redirectErrorStream(true);
+
 
         if (null == handler) {
-            handler = new DefaultProcessCallbackHandler();
+            handler = new DefaultCallbackHandler();
         }
-        if (log.isInfoEnabled())
-            log.info("inpuStream:'{}'", handler.handler(pro.getInputStream()));
 
         String result = null;
         try {
-            result = handler.handler(pro.getErrorStream());
+            process = pb.start();
+            result = handler.handler(process.getInputStream());
         } catch (Exception e) {
             log.error("errorStream:{}", result, e);
+        }finally {
+            if (null != process) {
+                try {
+                    process.getInputStream().close();
+                    process.getOutputStream().close();
+                    process.getErrorStream().close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         try {
-            int flag = pro.waitFor();
+            int flag = process.waitFor();
             if (flag != 0) {
                 throw new IllegalThreadStateException("process exit with error value : " + flag);
             }
         } catch (InterruptedException e) {
             log.error("wait for process finish error:{}", e);
         } finally {
-            if (null != pro)
-                pro.destroy();
+            if (null != process){
+                process.destroy();
+                pb = null;
+            }
+
             stopwatch.stop();
         }
         if (log.isInfoEnabled()) {
