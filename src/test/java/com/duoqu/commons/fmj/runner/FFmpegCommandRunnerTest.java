@@ -4,6 +4,8 @@ import com.duoqu.commons.fmj.BaseTest;
 import com.duoqu.commons.fmj.model.HLS;
 import com.duoqu.commons.fmj.model.VideoFile;
 import com.duoqu.commons.fmj.model.VideoInfo;
+import com.duoqu.commons.fmj.utils.FFmpegUtils;
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -11,6 +13,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by tonydeng on 15/4/16.
@@ -26,8 +29,10 @@ public class FFmpegCommandRunnerTest extends BaseTest {
             new File("/home/chichen/test//test2.mp4")
     );
     private static final List<File> inputs_mac = Lists.newArrayList(
-            new File("/Users/tonydeng/temp/m3u8/2013.flv"),
+//            new File("/Users/tonydeng/temp/m3u8/2013.flv"),
+//
             new File("/users/tonydeng/temp/m3u8/muse_va_v100.flv")
+//            new File("/Users/tonydeng/temp/m3u8/IMG_1666.MOV")
 
     );
     private static List<File> inputs;
@@ -50,7 +55,7 @@ public class FFmpegCommandRunnerTest extends BaseTest {
         }
     }
 
-    @Test
+//    @Test
     public void getVideoInfoTest() {
 
         for (File input : inputs) {
@@ -88,5 +93,33 @@ public class FFmpegCommandRunnerTest extends BaseTest {
             if (vf.isSuccess())
                 log.info(vf.toString());
         }
+    }
+//    @Test
+    public void parallelCoverMp4Test(){
+        for(File input:inputs){
+            VideoInfo vi = FFmpegCommandRunner.getVideoInfo(input);
+            List<String> commands = Lists.newArrayList(
+                    "parallel",
+                    "--will-cite",
+                    "-j","64",
+                    "ffmpeg",
+                    "-i","{}",
+                    "-vf","transpose=1",
+                    "-c:v","ibx264",
+                    "-c:v","libx264","-c:a","aac",
+                    " -strict","-2","-threads","8",
+                    "{.}_paraller.mp4",
+                    ":::",input.getAbsolutePath()
+            );
+
+//            log.info(FFmpegUtils.ffmpegCmdLine(commands));
+            FFmpegCommandRunner.runProcess(commands);
+    }
+
+
+
+
+//        commands.addAll(BaseCommandOption.toMP4CmdArrays(,"/Users/tonydeng/temp/m3u8/MG_1666.mp4"));
+
     }
 }

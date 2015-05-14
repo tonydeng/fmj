@@ -8,6 +8,7 @@ import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.*;
@@ -19,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by tonydeng on 15/5/12.
  */
+@Ignore
 public class ProcessCallbackHandlerTest extends BaseTest {
     private static InputStream input;
     private static long fileSize;
