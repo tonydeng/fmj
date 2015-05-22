@@ -1,13 +1,10 @@
 package com.duoqu.commons.fmj.runner;
 
 import com.duoqu.commons.fmj.model.VideoInfo;
-import com.duoqu.commons.fmj.model.VideoResolution;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,6 +15,8 @@ public class BaseCommandOption {
     private static final Logger log = LoggerFactory.getLogger(BaseCommandOption.class);
     private static boolean isWin = false;
     private static boolean isLinux = false;
+    private static Integer DEFAULT_IO_THREADS = 1;
+
     private static List<String> FFMPEG_BINARY;
     private static List<String> FFPROBE_BINARY;
 
@@ -37,6 +36,7 @@ public class BaseCommandOption {
     public static final String CA = "-c:a";
     public static final String STRICT = "-strict";
     public static final String VF = "-vf";
+    public static final String THREADS = "-threads";
 
     public static final String COPY = "copy";
 
@@ -67,11 +67,18 @@ public class BaseCommandOption {
                 isLinux = true;
             }
         }
+        //获得当前机器的CPU核数
+        DEFAULT_IO_THREADS = Runtime.getRuntime().availableProcessors();
         if (log.isDebugEnabled()) {
-            log.debug("isWindows : '{}'  or isLinux:'{}' ", isWin, isLinux);
+            log.debug("isWindows : '{}'  or isLinux:'{}' DEFAULT_IO_THREADS:'{}'",
+                    isWin, isLinux, DEFAULT_IO_THREADS);
         }
     }
 
+    /**
+     * 得到ffmpeg命令参数
+     * @return
+     */
     public static List<String> getFFmpegBinary() {
         if (FFMPEG_BINARY == null) {
             if (isWin) {
@@ -83,6 +90,10 @@ public class BaseCommandOption {
         return FFMPEG_BINARY;
     }
 
+    /**
+     * 得到ffprobe命令
+     * @return
+     */
     public static List<String> getFFprobeBinary() {
         if (null == FFPROBE_BINARY) {
             if (isWin) {
@@ -94,12 +105,25 @@ public class BaseCommandOption {
         return FFPROBE_BINARY;
     }
 
+    /**
+     * 视频输入的命令参数
+     * @param input
+     * @return
+     */
     public static List<String> toInputCommonsCmdArrays(String input) {
         return Lists.newArrayList(
                 INPUT, input
         );
     }
 
+    /**
+     * 截图的命令参数
+     * @param input
+     * @param output
+     * @param shotSecond
+     * @param vi
+     * @return
+     */
     public static List<String> toScreenshotCmdArrays(String input, String output, int shotSecond, VideoInfo vi) {
         if (vi != null && vi.getSize() > 0) {
             List<String> commands = Lists.newArrayList();
@@ -111,13 +135,8 @@ public class BaseCommandOption {
 
             commands.addAll(toInputCommonsCmdArrays(input));
 
-            if (vi.getRotate() > 0) {
-                //-vf "transpose=1" -c:a copy
-                commands.add(VF);
-                commands.add("transpose=1");
-                commands.add(CA);
-                commands.add(COPY);
-            }
+            commands.addAll(getRoateCmdArrays(vi));
+
             commands.add(T);
             commands.add("0.001");
             commands.add(Y);
@@ -131,32 +150,79 @@ public class BaseCommandOption {
         return Collections.EMPTY_LIST;
     }
 
+    /**
+     * 转成HLS的命令参数
+     * @param input
+     * @param m3u8Output
+     * @param cutSecond
+     * @param tsBaseUrl
+     * @param vi
+     * @return
+     */
     public static List<String> toHLSCmdArrays(String input, String m3u8Output, int cutSecond, String tsBaseUrl, VideoInfo vi) {
         if (vi != null && vi.getSize() > 0) {
             List<String> commands = Lists.newArrayList(toInputCommonsCmdArrays(input));
-            commands.addAll(Lists.newArrayList(CV, FORMAT_LIB264,
+            commands.addAll(getRoateCmdArrays(vi));
+            commands.addAll(Lists.newArrayList(
+                    CV, FORMAT_LIB264,
                     CA, FORMAT_ACC,
                     STRICT, "-2",
                     F, FORMAT_HLS,
+                    THREADS,DEFAULT_IO_THREADS.toString(),
                     HLS_TIME, String.valueOf(cutSecond),
                     HLS_LIST_SIZE, "0",
                     HLS_WRAP, "0",
                     HLS_BASE_URL, tsBaseUrl,
-                    m3u8Output));
+                    m3u8Output
+            ));
 
             return commands;
         }
         return Collections.EMPTY_LIST;
     }
 
-    public static List<String> toMP4CmdArrays(String input, String output) {
-        List<String> commands = Lists.newArrayList(toInputCommonsCmdArrays(input));
-        commands.addAll(Lists.newArrayList(
-                CV, FORMAT_LIB264,
-                CA, FORMAT_ACC,
-                STRICT, "-2",
-                output
-        ));
-        return commands;
+    /**
+     * 转码到mp4的命令参数
+     * @param input
+     * @param output
+     * @param vi
+     * @return
+     */
+    public static List<String> toMP4CmdArrays(String input, String output, VideoInfo vi) {
+        if (vi != null && vi.getSize() > 0) {
+            List<String> commands = Lists.newArrayList(toInputCommonsCmdArrays(input));
+            commands.addAll(getRoateCmdArrays(vi));
+            commands.addAll(Lists.newArrayList(
+                    CV, FORMAT_LIB264,
+                    CA, FORMAT_ACC,
+                    STRICT, "-2",
+                    THREADS, DEFAULT_IO_THREADS.toString(),
+                    output
+            ));
+            return commands;
+        }
+        return Collections.EMPTY_LIST;
+    }
+
+    /**
+     * 获取视频转向的参数
+     * @param vi
+     * @return
+     */
+    public static List<String> getRoateCmdArrays(VideoInfo vi){
+        if (vi != null && vi.getSize() > 0) {
+            if (vi.getRotate() > 0) {
+                //-vf "transpose=1" -c:a copy
+                return Lists.newArrayList(
+                        VF,"transpose=1"
+//                        CA,COPY
+                );
+//                commands.add(VF);
+//                commands.add("transpose=1");
+//                commands.add(CA);
+//                commands.add(COPY);
+            }
+        }
+        return Collections.EMPTY_LIST;
     }
 }
