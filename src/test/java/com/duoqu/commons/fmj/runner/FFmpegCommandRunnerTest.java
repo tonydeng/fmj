@@ -5,6 +5,7 @@ import com.duoqu.commons.fmj.model.HLS;
 import com.duoqu.commons.fmj.model.VideoFile;
 import com.duoqu.commons.fmj.model.VideoInfo;
 import com.duoqu.commons.fmj.utils.FFmpegUtils;
+import com.duoqu.commons.fmj.utils.FileUtils;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import org.junit.Before;
@@ -31,7 +32,8 @@ public class FFmpegCommandRunnerTest extends BaseTest {
     private static final List<File> inputs_mac = Lists.newArrayList(
 //            new File("/Users/tonydeng/temp/m3u8/2013.flv"),
 //
-            new File("/users/tonydeng/temp/m3u8/muse_va_v100.flv")
+            new File("/users/tonydeng/temp/m3u8/2013.flv"),
+            new File("/users/tonydeng/temp/m3u8/IMG_1666.MOV")
 //            new File("/Users/tonydeng/temp/m3u8/IMG_1666.MOV")
 
     );
@@ -73,10 +75,10 @@ public class FFmpegCommandRunnerTest extends BaseTest {
         }
     }
 
-//        @Test
+        @Test
     public void generationHlsTest() {
         for (File input : inputs) {
-            HLS hls = FFmpegCommandRunner.generationHls(input, 3, "http://p.wuguangchang.com/hls/");
+            HLS hls = FFmpegCommandRunner.generationHls(input, 3, "http://dl.duoquyuedu.com/m3u8/"+ FileUtils.getFileName(input)+"/");
             if (hls != null) {
                 log.info("m3u8 path:'{}'", hls.getM3u8().getAbsolutePath());
                 for (File ts : hls.getTs()) {
