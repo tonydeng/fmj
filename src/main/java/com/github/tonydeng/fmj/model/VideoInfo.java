@@ -1,4 +1,4 @@
-package com.duoqu.commons.fmj.model;
+package com.github.tonydeng.fmj.model;
 
 /**
  * Created by tonydeng on 15/4/16.

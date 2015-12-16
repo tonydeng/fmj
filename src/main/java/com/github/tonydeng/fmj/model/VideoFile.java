@@ -1,4 +1,4 @@
-package com.duoqu.commons.fmj.model;
+package com.github.tonydeng.fmj.model;
 
 import java.io.File;
 

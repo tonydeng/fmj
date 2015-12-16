@@ -1,6 +1,6 @@
-package com.duoqu.commons.fmj.handler;
+package com.github.tonydeng.fmj.handler;
 
-import com.duoqu.commons.fmj.runner.BaseCommandOption;
+import com.github.tonydeng.fmj.runner.BaseCommandOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

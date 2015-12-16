@@ -1,6 +1,6 @@
-package com.duoqu.commons.fmj.runner;
+package com.github.tonydeng.fmj.runner;
 
-import com.duoqu.commons.fmj.model.VideoInfo;
+import com.github.tonydeng.fmj.model.VideoInfo;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

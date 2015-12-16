@@ -1,12 +1,12 @@
-package com.duoqu.commons.fmj.runner;
+package com.github.tonydeng.fmj.runner;
 
-import com.duoqu.commons.fmj.handler.DefaultCallbackHandler;
-import com.duoqu.commons.fmj.handler.ProcessCallbackHandler;
-import com.duoqu.commons.fmj.model.HLS;
-import com.duoqu.commons.fmj.model.VideoFile;
-import com.duoqu.commons.fmj.model.VideoInfo;
-import com.duoqu.commons.fmj.utils.FFmpegUtils;
-import com.duoqu.commons.fmj.utils.FileUtils;
+import com.github.tonydeng.fmj.handler.DefaultCallbackHandler;
+import com.github.tonydeng.fmj.handler.ProcessCallbackHandler;
+import com.github.tonydeng.fmj.model.HLS;
+import com.github.tonydeng.fmj.model.VideoFile;
+import com.github.tonydeng.fmj.model.VideoInfo;
+import com.github.tonydeng.fmj.utils.FFmpegUtils;
+import com.github.tonydeng.fmj.utils.FileUtils;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;

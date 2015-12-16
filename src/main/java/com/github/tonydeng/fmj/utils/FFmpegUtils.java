@@ -1,7 +1,7 @@
-package com.duoqu.commons.fmj.utils;
+package com.github.tonydeng.fmj.utils;
 
-import com.duoqu.commons.fmj.model.VideoInfo;
-import com.duoqu.commons.fmj.model.VideoResolution;
+import com.github.tonydeng.fmj.model.VideoInfo;
+import com.github.tonydeng.fmj.model.VideoResolution;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
