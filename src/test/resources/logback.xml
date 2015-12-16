@@ -11,8 +11,7 @@
 	</appender>
 		
 
-	<logger name="com.duoqu" level="DEBUG" />
-    <logger name="com.duoqu.muse.dao.repository" level="ERROR" />
+	<logger name="com.github.tonydeng.fmj" level="DEBUG" />
 	<logger name="org.springframework" level="ERROR" />
 	<logger name="org.quartz" level="ERROR" />
 	<logger name="ch.qos" level="ERROR" />

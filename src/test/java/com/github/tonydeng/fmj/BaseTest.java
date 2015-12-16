@@ -1,4 +1,4 @@
-package com.duoqu.commons.fmj;
+package com.github.tonydeng.fmj;
 
 import org.junit.Test;
 import org.slf4j.Logger;

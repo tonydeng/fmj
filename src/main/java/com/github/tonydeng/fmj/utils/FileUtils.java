@@ -1,4 +1,4 @@
-package com.duoqu.commons.fmj.utils;
+package com.github.tonydeng.fmj.utils;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;

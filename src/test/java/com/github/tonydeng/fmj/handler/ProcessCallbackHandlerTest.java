@@ -1,6 +1,6 @@
-package com.duoqu.commons.fmj.handler;
+package com.github.tonydeng.fmj.handler;
 
-import com.duoqu.commons.fmj.BaseTest;
+import com.github.tonydeng.fmj.BaseTest;
 import com.google.common.base.Charsets;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;

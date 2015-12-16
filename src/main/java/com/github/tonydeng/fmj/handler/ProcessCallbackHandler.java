@@ -1,4 +1,4 @@
-package com.duoqu.commons.fmj.handler;
+package com.github.tonydeng.fmj.handler;
 
 import java.io.InputStream;
 

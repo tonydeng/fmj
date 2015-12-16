@@ -1,14 +1,10 @@
-package com.duoqu.commons.fmj.utils;
+package com.github.tonydeng.fmj.utils;
 
-import com.duoqu.commons.fmj.BaseTest;
-import com.duoqu.commons.fmj.model.VideoInfo;
-import com.duoqu.commons.fmj.runner.BaseCommandOption;
-import com.duoqu.commons.fmj.runner.FFmpegCommandRunner;
+import com.github.tonydeng.fmj.BaseTest;
+import com.github.tonydeng.fmj.model.VideoInfo;
 import com.google.common.collect.Lists;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.File;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -1,6 +1,6 @@
-package com.duoqu.commons.fmj.utils;
+package com.github.tonydeng.fmj.utils;
 
-import com.duoqu.commons.fmj.BaseTest;
+import com.github.tonydeng.fmj.BaseTest;
 import com.google.common.collect.Lists;
 import org.junit.Ignore;
 import org.junit.Test;

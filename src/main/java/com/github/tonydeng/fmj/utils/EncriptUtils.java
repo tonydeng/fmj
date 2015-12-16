@@ -1,4 +1,4 @@
-package com.duoqu.commons.fmj.utils;
+package com.github.tonydeng.fmj.utils;
 
 import java.security.MessageDigest;
 

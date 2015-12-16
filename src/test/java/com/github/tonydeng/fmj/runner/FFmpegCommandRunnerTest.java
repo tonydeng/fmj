@@ -1,12 +1,10 @@
-package com.duoqu.commons.fmj.runner;
+package com.github.tonydeng.fmj.runner;
 
-import com.duoqu.commons.fmj.BaseTest;
-import com.duoqu.commons.fmj.model.HLS;
-import com.duoqu.commons.fmj.model.VideoFile;
-import com.duoqu.commons.fmj.model.VideoInfo;
-import com.duoqu.commons.fmj.utils.FFmpegUtils;
-import com.duoqu.commons.fmj.utils.FileUtils;
-import com.google.common.base.Stopwatch;
+import com.github.tonydeng.fmj.BaseTest;
+import com.github.tonydeng.fmj.model.HLS;
+import com.github.tonydeng.fmj.model.VideoFile;
+import com.github.tonydeng.fmj.model.VideoInfo;
+import com.github.tonydeng.fmj.utils.FileUtils;
 import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -14,7 +12,6 @@ import org.junit.Test;
 
 import java.io.File;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by tonydeng on 15/4/16.
