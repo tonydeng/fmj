@@ -2,16 +2,21 @@ package com.duoqu.commons.fmj.utils;
 
 import com.duoqu.commons.fmj.BaseTest;
 import com.duoqu.commons.fmj.model.VideoInfo;
+import com.duoqu.commons.fmj.runner.BaseCommandOption;
+import com.duoqu.commons.fmj.runner.FFmpegCommandRunner;
+import com.google.common.collect.Lists;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.File;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * Created by tonydeng on 15/4/17.
  */
-@Ignore
+//@Ignore
 public class FFmpegUtilsTest extends BaseTest {
     private static final String stdout = "ffprobe version 2.6.1 Copyright (c) 2007-2015 the FFmpeg developers\n" +
             "  built with Apple LLVM version 6.0 (clang-600.0.57) (based on LLVM 3.5svn)\n" +
@@ -51,7 +56,7 @@ public class FFmpegUtilsTest extends BaseTest {
         log.debug(vi.toString());
     }
 
-    @Test
+//    @Test
     public void getRotateTest(){
         String str = "      rotate          : 90\n";
         String regexRotate = "rotate (.*?): (\\d*)(\\d*)";
@@ -68,5 +73,16 @@ public class FFmpegUtilsTest extends BaseTest {
 //                    vi.setRotate(Integer.valueOf(rotate.substring(rotate.indexOf(":") + 1, rotate.length()).trim()));
 //                }
         }
+    }
+    @Test
+    public void ffmpegCmdLineTest(){
+        List commands = Lists.newArrayList(
+                "test" ,
+                "test2",
+                "test3",
+                "test4"
+        );
+
+        log.info(FFmpegUtils.ffmpegCmdLine(commands));
     }
 }
