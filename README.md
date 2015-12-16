@@ -27,7 +27,7 @@
 1. 可以在[这儿](http://ffmpeg.zeranoe.com/builds/)下载编译好的FFmpeg
 2. 解压到 **/path/to/ffmpeg** 
 3. 添加 **/path/to/ffmpeg/bin** 到你的环境变量 **PATH** 中。
-4. 打开命令行，执行 **ffmpeg -v**
+4. 打开命令行，执行 **ffmpeg -version**
 
 ## 具体的ffmpeg命令可以参考下面的文档
 

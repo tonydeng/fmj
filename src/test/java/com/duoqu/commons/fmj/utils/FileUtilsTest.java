@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by tonydeng on 15/4/17.
  */
-//@Ignore
+@Ignore
 public class FileUtilsTest extends BaseTest {
     private static final List<File> files = Lists.newArrayList(
             new File("/Users/tonydeng/temp/m3u8/muse_va_v97.mp4"),

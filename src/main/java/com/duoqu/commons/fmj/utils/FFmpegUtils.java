@@ -109,9 +109,10 @@ public class FFmpegUtils {
      */
     public static String ffmpegCmdLine(List<String> commands) {
         StringBuffer sb = new StringBuffer();
-        for (String command : commands) {
-            sb.append(command + " ");
-        }
+//        for (String command : commands) {
+//            sb.append(command + " ");
+//        }
+        commands.forEach((command) -> sb.append(command + " "));
         return sb.toString();
     }
 
