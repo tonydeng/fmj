@@ -31,7 +31,7 @@
 
 ## 具体的ffmpeg命令可以参考下面的文档
 
-[FFMpeg命令介绍](ffmpeg.md)
+[FFMpeg命令介绍](https://github.com/tonydeng/fmj/blob/master/ffmpeg.md)
 
 ## 其他解释
 
