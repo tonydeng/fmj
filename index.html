@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Fmj : FMJ (FFMpeg for Java)。通过Java调用FFMpeg命令的方式来对音视频进行处理（获取信息、截图等等）。">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Fmj</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/tonydeng/fmj">View on GitHub</a>
+
+          <h1 id="project_title">Fmj</h1>
+          <h2 id="project_tagline">FMJ (FFMpeg for Java)。通过Java调用FFMpeg命令的方式来对音视频进行处理（获取信息、截图等等）。</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/tonydeng/fmj/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/tonydeng/fmj/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="项目介绍" class="anchor" href="#%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>项目介绍</h1>
+
+<h2>
+<a id="fmj-ffmpeg-for-java" class="anchor" href="#fmj-ffmpeg-for-java" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>FMJ (FFMpeg for Java)</h2>
+
+<p><img src="fmj.jpg" alt="FMJ Logo"></p>
+
+<p>通过Java调用FFMpeg命令的方式来对音视频进行处理（获取信息、截图等等）。</p>
+
+<h2>
+<a id="ffmpeg安装" class="anchor" href="#ffmpeg%E5%AE%89%E8%A3%85" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>FFMpeg安装</h2>
+
+<p><a href="http://ffmpeg.org/">FFMpeg官网</a></p>
+
+<p>建议使用 <strong>ffmpeg-2.6.1</strong> 版本</p>
+
+<h3>
+<a id="linux" class="anchor" href="#linux" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Linux</h3>
+
+<p><code>yum install ffmpeg</code></p>
+
+<p><code>apt-get install ffmpeg</code></p>
+
+<h3>
+<a id="mac" class="anchor" href="#mac" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Mac</h3>
+
+<p><code>brew install ffmpeg</code></p>
+
+<h3>
+<a id="windows" class="anchor" href="#windows" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Windows</h3>
+
+<ol>
+<li>可以在<a href="http://ffmpeg.zeranoe.com/builds/">这儿</a>下载编译好的FFmpeg</li>
+<li>解压到 <strong>/path/to/ffmpeg</strong> </li>
+<li>添加 <strong>/path/to/ffmpeg/bin</strong> 到你的环境变量 <strong>PATH</strong> 中。</li>
+<li>打开命令行，执行 <strong>ffmpeg -version</strong>
+</li>
+</ol>
+
+<h2>
+<a id="具体的ffmpeg命令可以参考下面的文档" class="anchor" href="#%E5%85%B7%E4%BD%93%E7%9A%84ffmpeg%E5%91%BD%E4%BB%A4%E5%8F%AF%E4%BB%A5%E5%8F%82%E8%80%83%E4%B8%8B%E9%9D%A2%E7%9A%84%E6%96%87%E6%A1%A3" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>具体的ffmpeg命令可以参考下面的文档</h2>
+
+<p><a href="ffmpeg.md">FFMpeg命令介绍</a></p>
+
+<h2>
+<a id="其他解释" class="anchor" href="#%E5%85%B6%E4%BB%96%E8%A7%A3%E9%87%8A" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>其他解释</h2>
+
+<h3>
+<a id="全金属被甲弹fmj---full-metal-jacket" class="anchor" href="#%E5%85%A8%E9%87%91%E5%B1%9E%E8%A2%AB%E7%94%B2%E5%BC%B9fmj---full-metal-jacket" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>全金属被甲弹（FMJ - Full Metal Jacket）</h3>
+
+<p>弹头为铅质或铅锑合金以提升比重与质量，然而铅质延展性过强以致于如果直接作为弹头发射，会于击发时碎裂或与枪管摩擦产生变形，最后与大气作不良的空气动力结合而失去弹道精准性。因此将铅为铜所完全包覆，使弹头能够承受击发时的推进力又不会磨损变形；然而较轻的比重与质量使得全金属包覆弹进入密度高的目标物，例如人体（人体密度为大气的1000倍），就会因为因惯性而产生的动能扩散于目标物上，以至于动能对目标物所产生的作用力结合入射角/反射角的效应而产生滚转。这个滚转为预期与期盼的效果，尽管子弹终端弹道的滚转不可预期，然而滚转的途径势必能够造成深层广泛的肌肉撕裂伤，甚至切断动脉击碎骨骼，而造成人员严重的伤害与死亡。</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Fmj maintained by <a href="https://github.com/tonydeng">tonydeng</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
