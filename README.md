@@ -1,5 +1,7 @@
 # 项目介绍
 
+[![Build Status](https://travis-ci.org/tonydeng/fmj.svg?branch=master)](https://travis-ci.org/tonydeng/fmj)
+
 ## FMJ (FFMpeg for Java)
 
 ![FMJ Logo](fmj.jpg)
