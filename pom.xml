@@ -14,6 +14,7 @@
         <tag>HEAD</tag>
     </scm>
     <properties>
+        <jdk.version>1.8</jdk.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>4.12</junit.version>
         <spring.version>4.1.4.RELEASE</spring.version>
@@ -67,9 +68,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <target>1.8</target>
-                    <source>1.8</source>
-                    <encoding>utf-8</encoding>
+                    <target>${jdk.version}</target>
+                    <source>${jdk.version}</source>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
 
@@ -78,7 +79,7 @@
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.6</version>
                 <configuration>
-                    <encoding>UTF-8</encoding>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
             <plugin>
@@ -86,8 +87,8 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.9.1</version>
                 <configuration>
-                    <encoding>UTF-8</encoding>
-                    <charset>UTF-8</charset>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <charset>${project.build.sourceEncoding}</charset>
                 </configuration>
             </plugin>
             <plugin>
@@ -111,7 +112,7 @@
                                     <version>3.1</version>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
-                                    <version>1.8</version>
+                                    <version>${jdk.version}</version>
                                 </requireJavaVersion>
                             </rules>
                         </configuration>

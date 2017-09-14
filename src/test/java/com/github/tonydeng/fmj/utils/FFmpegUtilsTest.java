@@ -79,6 +79,6 @@ public class FFmpegUtilsTest extends BaseTest {
                 "test4"
         );
 
-        log.info(FFmpegUtils.ffmpegCmdLine(commands));
+        log.info("cmd line :'{}'",FFmpegUtils.ffmpegCmdLine(commands));
     }
 }

@@ -2,6 +2,7 @@ package com.github.tonydeng.fmj.utils;
 
 import com.github.tonydeng.fmj.model.VideoInfo;
 import com.github.tonydeng.fmj.model.VideoResolution;
+import com.google.common.base.Joiner;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,12 +109,7 @@ public class FFmpegUtils {
      * @return
      */
     public static String ffmpegCmdLine(List<String> commands) {
-        StringBuffer sb = new StringBuffer();
-//        for (String command : commands) {
-//            sb.append(command + " ");
-//        }
-        commands.forEach((command) -> sb.append(command + " "));
-        return sb.toString();
+        return Joiner.on(" ").join(commands);
     }
 
 }
