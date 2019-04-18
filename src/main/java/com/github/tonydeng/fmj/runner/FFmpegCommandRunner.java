@@ -23,8 +23,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class FFmpegCommandRunner {
     private static final Logger log = LoggerFactory.getLogger(FFmpegCommandRunner.class);
-    private static ProcessBuilder pb = null;
-    private static Process process = null;
 
     /**
      * 获取视频信息
@@ -156,13 +154,15 @@ public class FFmpegCommandRunner {
      * @throws Exception
      */
     public static String runProcess(List<String> commands, ProcessCallbackHandler handler) {
+        ProcessBuilder pb = null;
+        Process process = null;
+
         if (log.isDebugEnabled())
             log.debug("start to run ffmpeg process... cmd : '{}'", FFmpegUtils.ffmpegCmdLine(commands));
         Stopwatch stopwatch = Stopwatch.createStarted();
         pb = new ProcessBuilder(commands);
 
         pb.redirectErrorStream(true);
-
 
         if (null == handler) {
             handler = new DefaultCallbackHandler();
