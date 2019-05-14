@@ -129,27 +129,6 @@
     </build>
     <repositories>
         <repository>
-            <id>duoqu maven repo</id>
-            <url>http://mvn.dq.in/</url>
-            <layout>default</layout>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>duoqu maven snapshots repo</id>
-            <url>http://mvn.dq.in/snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
             <id>oschina nexus</id>
             <url>http://maven.oschina.net/content/groups/public/</url>
             <snapshots>
@@ -164,14 +143,4 @@
             </snapshots>
         </repository>
     </repositories>
-    <distributionManagement>
-        <repository>
-            <id>duoqu-maven-repository</id>
-            <url>sftp://mvn.dq.in/dq/maven</url>
-        </repository>
-        <snapshotRepository>
-            <id>duoqu-maven-repository-snapshots</id>
-            <url>sftp://mvn.dq.in/dq/maven/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
 </project>
