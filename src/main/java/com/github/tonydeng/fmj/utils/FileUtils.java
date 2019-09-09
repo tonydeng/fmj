@@ -1,9 +1,8 @@
 package com.github.tonydeng.fmj.utils;
 
 import com.google.common.collect.Lists;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,8 +14,8 @@ import java.util.List;
 /**
  * Created by tonydeng on 15/4/17.
  */
+@Slf4j
 public class FileUtils {
-    private static final Logger log = LoggerFactory.getLogger(FileUtils.class);
     private static final String PATH_SRCEENTSHOT = "srceent";
     private static final String PATH_HLS = "hls";
     private static final String EXTEND_JPG = ".jpg";
@@ -24,23 +23,26 @@ public class FileUtils {
     private static final String EXTEND_TS = ".ts";
     private static final String EXTEND_MP4 = ".mp4";
 
+    private FileUtils() {
+    }
+
     /**
      * 获得文件大小
+     *
      * @param input
      * @return
      */
-    public static long getFineSize(File input){
-        if(input != null && input.exists()){
+    public static long getFineSize(File input) {
+        if (input != null && input.exists()) {
             try {
                 return new FileInputStream(input).available();
             } catch (IOException e) {
-                if(log.isErrorEnabled())
-                    log.error("getFineSize error:'{}'",e.getMessage());
-                e.printStackTrace();
+                log.error("getFineSize error:'{}'", e.getMessage());
             }
         }
         return 0;
     }
+
     /**
      * 根据视频文件获得视频截图文件
      *
@@ -92,16 +94,11 @@ public class FileUtils {
         if (m3u8 != null && m3u8.exists()) {
             final File path = m3u8.getParentFile();
             if (path.isDirectory()) {
-                FilenameFilter filter = new FilenameFilter() {
-                    @Override
-                    public boolean accept(File dir, String name) {
-                        return name.endsWith(EXTEND_TS);
-                    }
-                };
+                FilenameFilter filter = (dir, name) -> name.endsWith(EXTEND_TS);
                 return Lists.newArrayList(path.listFiles(filter));
             }
         }
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
     /**
@@ -153,10 +150,11 @@ public class FileUtils {
      */
     public static String getFileName(File file) {
         if (file != null && file.exists() && file.isFile()) {
-            if (file.getName().lastIndexOf(".") > 0)
-                return file.getName().substring(0, file.getName().lastIndexOf(".")).toLowerCase();
-            else
+            if (file.getName().lastIndexOf('.') > 0) {
+                return file.getName().substring(0, file.getName().lastIndexOf('.')).toLowerCase();
+            } else {
                 return file.getName();
+            }
         }
         return null;
     }
@@ -170,8 +168,8 @@ public class FileUtils {
     public static String getFileExtend(File file) {
         if (file != null && file.exists()
                 && file.isFile()
-                && file.getName().lastIndexOf(".") > 0) {
-            return file.getName().substring(file.getName().lastIndexOf(".") + 1, file.getName().length()).toLowerCase();
+                && file.getName().lastIndexOf('.') > 0) {
+            return file.getName().substring(file.getName().lastIndexOf('.') + 1, file.getName().length()).toLowerCase();
         }
         return null;
     }
