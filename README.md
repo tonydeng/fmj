@@ -1,6 +1,11 @@
 # 项目介绍
 
 [![Build Status](https://travis-ci.org/tonydeng/fmj.svg?branch=master)](https://travis-ci.org/tonydeng/fmj)
+[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=com.github.tonydeng:fmj&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.github.tonydeng:fmj)<br/>
+[![SonarCloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.github.tonydeng:fmj&metric=coverage)](https://sonarcloud.io/dashboard?id=com.github.tonydeng:fmj)
+[![Lines of code](https://sonarcloud.io/api/project_badges/measure?project=com.github.tonydeng:fmj&metric=ncloc)](https://sonarcloud.io/dashboard?id=com.github.tonydeng:fmj)
+[![SonarCloud Bugs](https://sonarcloud.io/api/project_badges/measure?project=com.github.tonydeng:fmj&metric=bugs)](https://sonarcloud.io/project/issues?id=com.github.tonydeng:fmj&resolved=false&types=BUG)
+[![SonarCloud vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=com.github.tonydeng:fmj&metric=vulnerabilities)](https://sonarcloud.io/component_measures/metric/security_rating/list?id=com.github.tonydeng:fmj)
 
 ## FMJ (FFMpeg for Java)
 
