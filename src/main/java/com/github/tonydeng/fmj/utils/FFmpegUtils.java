@@ -2,9 +2,8 @@ package com.github.tonydeng.fmj.utils;
 
 import com.github.tonydeng.fmj.model.VideoInfo;
 import com.github.tonydeng.fmj.model.VideoResolution;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -13,12 +12,15 @@ import java.util.regex.Pattern;
 /**
  * Created by tonydeng on 15/4/15.
  */
+@Slf4j
 public class FFmpegUtils {
-    private static final Logger log = LoggerFactory.getLogger(FFmpegUtils.class);
-    private static final String regexDuration = "Duration: (.*?), start: (.*?), bitrate: (\\d*) kb\\/s";
-    private static final String regexVideo = "Video: (.*?), (.*?), (.*?)[,\\s]";
-    private static final String regexAudio = "Audio: (\\w*), (\\d*) Hz";
-    private static final String regexRotate = "rotate (.*?): (\\d*)(\\d*)";
+    private static final String REGEX_DURATION = "Duration: (.*?), start: (.*?), bitrate: (\\d*) kb\\/s";
+    private static final String REGEX_VIDEO = "Video: (.*?), (.*?), (.*?)[,\\s]";
+    private static final String REGEX_AUDIO = "Audio: (\\w*), (\\d*) Hz";
+    private static final String REGEX_ROTATE = "rotate (.*?): (\\d*)(\\d*)";
+
+    private FFmpegUtils() {
+    }
 
     public static VideoInfo regInfo(String stdout) {
         return regInfo(stdout, null);
@@ -34,21 +36,21 @@ public class FFmpegUtils {
                 vi = new VideoInfo();
             }
 
-            Pattern patternDuration = Pattern.compile(regexDuration);
+            Pattern patternDuration = Pattern.compile(REGEX_DURATION);
             Matcher matcherDuration = patternDuration.matcher(stdout);
             if (matcherDuration.find()) {
                 String duration = matcherDuration.group(1);
-                if (StringUtils.isNotBlank(duration) && duration.indexOf(":") >= 0) {
+                if (StringUtils.isNotBlank(duration) && duration.indexOf(':') >= 0) {
                     String[] time = duration.split(":");
-                    int hour = Integer.valueOf(time[0]);
-                    int minute = Integer.valueOf(time[1]);
+                    int hour = Integer.parseInt(time[0]);
+                    int minute = Integer.parseInt(time[1]);
                     int second = 0;
-                    if (time[2].indexOf(".") >= 0) {
-                        second = Integer.valueOf(time[2].substring(0, time[2].indexOf(".")));
+                    if (time[2].indexOf('.') >= 0) {
+                        second = Integer.valueOf(time[2].substring(0, time[2].indexOf('.')));
                     } else {
                         second = Integer.valueOf(time[2]);
                     }
-                    vi.setDuration((hour * 60 * 60) + (minute * 60) + second);
+                    vi.setDuration((long) ((hour * 60 * 60) + (minute * 60) + second));
                 }
 
 //                map.put("提取出播放时间", matcherDuration.group(1));
@@ -56,7 +58,7 @@ public class FFmpegUtils {
 //                map.put("bitrate 码率 单位 kb", matcherDuration.group(3));
             }
 
-            Pattern patternVideo = Pattern.compile(regexVideo);
+            Pattern patternVideo = Pattern.compile(REGEX_VIDEO);
             Matcher matcherVideo = patternVideo.matcher(stdout);
 
             if (matcherVideo.find()) {
@@ -73,7 +75,7 @@ public class FFmpegUtils {
                 }
 
             }
-//            Pattern patternAudio = Pattern.compile(regexAudio);
+//            Pattern patternAudio = Pattern.compile(REGEX_AUDIO);
 //            Matcher matcherAudio = patternAudio.matcher(info);
 //
 //            if (matcherAudio.find()) {
@@ -82,7 +84,7 @@ public class FFmpegUtils {
 //                ai.setDecoder(matcherAudio.group(1));
 //            }
 
-            Pattern patternRotate = Pattern.compile(regexRotate);
+            Pattern patternRotate = Pattern.compile(REGEX_ROTATE);
             Matcher matcherRotate = patternRotate.matcher(stdout);
             if (matcherRotate.find()) {
 //                for (int i = 0; i < matcherRotate.groupCount(); i++) {
@@ -108,12 +110,7 @@ public class FFmpegUtils {
      * @return
      */
     public static String ffmpegCmdLine(List<String> commands) {
-        StringBuffer sb = new StringBuffer();
-//        for (String command : commands) {
-//            sb.append(command + " ");
-//        }
-        commands.forEach((command) -> sb.append(command + " "));
-        return sb.toString();
+        return String.join(" ",commands);
     }
 
 }

@@ -1,28 +1,30 @@
 package com.github.tonydeng.fmj.handler;
 
 import com.github.tonydeng.fmj.runner.BaseCommandOption;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.common.collect.Lists;
+import lombok.Cleanup;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 
 /**
  * Created by tonydeng on 15/4/20.
  */
+@Slf4j
 public class DefaultCallbackHandler implements ProcessCallbackHandler {
-    private static final Logger log = LoggerFactory.getLogger(DefaultCallbackHandler.class);
 
-
+    @Override
     public String handler(InputStream inputStream) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, BaseCommandOption.UTF8));
-        StringBuffer sb = new StringBuffer();
+        @Cleanup BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, BaseCommandOption.UTF8));
+        List<String> buffer = Lists.newArrayList();
         String line;
         while ((line = reader.readLine()) != null) {
-            sb.append(line).append("\n");
+            buffer.add(line);
         }
-        return sb.toString();
+        return String.join("\n", buffer);
     }
 }
