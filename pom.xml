@@ -19,7 +19,7 @@
         <spring.version>4.1.4.RELEASE</spring.version>
         <logback.version>1.1.2</logback.version>
         <commons-lang3.version>3.9</commons-lang3.version>
-        <commons-io.version>2.6</commons-io.version>
+        <commons-io.version>2.7</commons-io.version>
         <guava.version>[30.0-jre,)</guava.version>
         <lombok.version>1.18.8</lombok.version>
     </properties>
