@@ -137,14 +137,14 @@
     <repositories>
         <repository>
             <id>oschina nexus</id>
-            <url>http://maven.oschina.net/content/groups/public/</url>
+            <url>https://maven.oschina.net/content/groups/public/</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
         </repository>
         <repository>
             <id>oschina thirdparty</id>
-            <url>http://maven.oschina.net/content/repositories/thirdparty/</url>
+            <url>https://maven.oschina.net/content/repositories/thirdparty/</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
