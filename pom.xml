@@ -18,7 +18,7 @@
         <junit.version>4.13.1</junit.version>
         <spring.version>4.1.4.RELEASE</spring.version>
         <logback.version>1.2.13</logback.version>
-        <commons-lang3.version>3.9</commons-lang3.version>
+        <commons-lang3.version>3.18.0</commons-lang3.version>
         <commons-io.version>2.7</commons-io.version>
         <guava.version>[30.0-jre,)</guava.version>
         <lombok.version>1.18.8</lombok.version>
